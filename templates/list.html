@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+		<link rel="stylesheet" href="{{ url_for('static', filename = 'index.css') }}">
+	<body>
+		<h5><a href="/blob/la">LA</a> | <a href="/blob/mt">Montreal</a> | <a href="/blob/eu">France</a> | <a href="/forcescan">Force Cache</a>
+		<h1>Currently offline servers in {{ location.upper() }} ({{ downs|length }})</h1>
+		<table>
+		{% for server in downs %}
+		
+			<tr>
+				<td>{{ server }}</td>
+			</tr>
+		
+		{% endfor %}
+		</table>
+	</body>
+</html>
