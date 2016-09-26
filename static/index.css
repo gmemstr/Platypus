@@ -4,3 +4,21 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	background-color: #f9f9f9;
 }
+.list {
+	position: fixed;
+	top: 30%;
+	left: 50%;
+	/* bring your own prefixes */
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+.options {
+	text-align: center;
+	font-size: 2vh;
+}
+h1 {
+	font-size: 4vh;
+}
+h2 {
+	font-size: 3vh;
+}
