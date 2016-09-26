@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Platypus by GGServers</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Platypus</h1>
+        <p>(new) Internal GGServers Status Page Flask Application</p>
+
+        <p class="view"><a href="https://github.com/GGServers/Platypus">View the Project on GitHub <small>GGServers/Platypus</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/GGServers/Platypus/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/GGServers/Platypus/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/GGServers/Platypus">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="platypus" class="anchor" href="#platypus" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Platypus</h1>
+
+<p>(new) Internal GGServers Status Page Flask Application</p>
+
+<p>Scans servers and caches the results in a .json file that
+is refreshed once the cache has aged 15 minutes or more.</p>
+
+<h3>
+<a id="current-features" class="anchor" href="#current-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Current Features</h3>
+
+<ul>
+<li>Scan servers from .json list</li>
+<li>Cache results along with time of scan </li>
+<li>Can filter by physical server location</li>
+<li>Force rescan of all servers</li>
+</ul>
+
+<h3>
+<a id="planned-features" class="anchor" href="#planned-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Planned Features</h3>
+
+<ul>
+<li>Sleeker webpage</li>
+<li>Slack bot intergration</li>
+<li>RESTful API</li>
+<li>Dedicated configuration file</li>
+<li>Docker image</li>
+</ul>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
+
+<ul>
+<li>Python 3.x</li>
+<li>Flask 0.11.x</li>
+<li>
+<code>requests</code> Python Library</li>
+</ul>
+
+<h2>
+<a id="running" class="anchor" href="#running" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running</h2>
+
+<p><code>__init__.py</code> is where the magic happens. For testing, you can
+do the following:</p>
+
+<pre><code>git clone git@github.com:GGServers/Platypus.git
+
+cd Platypus/
+
+export FLASK_APP=__init__.py
+
+python -m flask run
+</code></pre>
+
+<h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>Store all the servers you want to check the status of in <code>servers.json</code>.
+The basic layout is like so:</p>
+
+<pre><code>[
+    {
+        "name" : "Panel 1",
+        "hostname" : "first.gmem.pw",
+        "location" : "MT"
+    },
+    {
+        "name" : "Panel 2",
+        "hostname" : "second.gmem.pw",
+        "location" : "LA"
+    }
+]
+</code></pre>
+
+<ul>
+<li>
+<code>name</code>: What you want the server to show up as on the list</li>
+<li>
+<code>hostname</code>: The location of your server. Can be IP or domain.</li>
+<li>
+<code>location</code>: For geolocation filtering.</li>
+</ul>
+
+<h2>
+<a id="paths" class="anchor" href="#paths" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Paths</h2>
+
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>What</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/</code></td>
+<td>Main homepage, loads all servers</td>
+</tr>
+<tr>
+<td><code>/blob/&lt;location&gt;</code></td>
+<td>Displays servers from a specific location</td>
+</tr>
+<tr>
+<td><code>/forcescan</code></td>
+<td>Forces Python to scan all the servers again</td>
+</tr>
+</tbody>
+</table>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/GGServers">GGServers</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
