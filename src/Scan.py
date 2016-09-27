@@ -28,7 +28,7 @@ def check(lctn):
 
 def cache(lctn):
 	result = []
-	file = open("cache.json", "r")
+	file = open("cache.json", "r+")
 	cachejson = json.load(file)
 	
 	if time.time() - cachejson["time"] >= 900:
