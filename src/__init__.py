@@ -17,4 +17,5 @@ def forcescan():
 	return "<script>window.location.href = '/';</script>"
 	
 if __name__ == '__main__':
-   app.run()
+	app.run()
+   # app.run(host='0.0.0.0') # Make server purblicly visible
