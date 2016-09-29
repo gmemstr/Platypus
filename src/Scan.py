@@ -48,7 +48,7 @@ def updatecache():
 			"time":time.time(),
 			"servers":check("all") 
 		}
-		file = open("cache.json", "w")
-		json.dump(data, file)
+		with open('cache.json', 'w') as outfile:
+			json.dump(data, outfile)
 		
 		return json.dumps(data)
