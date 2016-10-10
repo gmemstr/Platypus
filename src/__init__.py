@@ -1,5 +1,9 @@
 from flask import Flask, render_template
 import Scan
+import sched, time
+
+import threading
+
 from os import environ
 app = Flask(__name__)
 
@@ -15,7 +19,15 @@ def checkone(lctn):
 def forcescan():
 	Scan.updatecache()
 	return "<script>window.location.href = '/';</script>"
-	
+
 if __name__ == '__main__':
+
 	app.run()
-   # app.run(host='0.0.0.0') # Make server purblicly visible
+	# app.run(host='0.0.0.0') # Make server purblicly visible
+   
+def f():
+    Scan.updatecache()
+    # call f() again in 60 seconds
+    threading.Timer(500, f).start()
+
+f()
