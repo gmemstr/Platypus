@@ -1,8 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory, jsonify
 import Scan
-import sched, time
-
-import threading
 
 from os import environ
 app = Flask(__name__)
@@ -20,14 +17,12 @@ def forcescan():
 	Scan.updatecache()
 	return "<script>window.location.href = '/';</script>"
 
+@app.route('/raw')
+def rawjson():
+	file = open("cache.json", "r").read()
+	return file
+	
 if __name__ == '__main__':
 
 	app.run()
 	# app.run(host='0.0.0.0') # Make server purblicly visible
-   
-def f():
-    Scan.updatecache()
-    # call f() again in 60 seconds
-    threading.Timer(500, f).start()
-
-f()

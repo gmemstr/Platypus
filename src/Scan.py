@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import threading
 
 def servers():
 	file = open("servers.json", "r").read()
@@ -52,3 +53,10 @@ def updatecache():
 			json.dump(data, outfile)
 		
 		return json.dumps(data)
+			   
+def f():
+    updatecache()
+    # call f() again in 10 minutes
+    threading.Timer(600, f).start()
+
+f()
