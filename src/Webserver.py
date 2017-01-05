@@ -1,32 +1,30 @@
+# Python modules
 from flask import Flask, render_template, send_from_directory, jsonify
-import Scan
+import time
+
+# Custom imports
+import Statuses  # Sometimes this may be accidently commented out for testing
+from Cache import Fetch
+
 
 app = Flask(__name__)
 
 
 @app.route('/')
-def checkall():
-    return render_template("list.html", location="worldwide", downs=Scan.cache("all"))
-
-
-@app.route('/blob/<lctn>')
-def checkone(lctn):
-    return render_template("list.html", location=lctn, downs=Scan.cache(lctn))
-
-
-@app.route('/forcescan')
-def forcescan():
-    Scan.updatecache()
-    return "<script>window.location.href = '/';</script>"
+def Index():
+    return render_template("index.html",
+                           stats=sorted(Fetch("json/stats.json", False).items(),
+                                        key=lambda i: int(i[0])))
 
 
 @app.route('/raw')
-def rawjson():
-    file = open("cache.json", "r").read()
+def ReturnRawStats():
+    file = open("json/stats.json", "r").read()
     return file
 
-if __name__ == '__main__':
 
-    app.run()
-    # app.run(host='0.0.0.0') # Make server purblicly visible
-	
+if __name__ == '__main__':
+    app.run(port=8080)  # Run server on port 8080
+    # Internally this webserver is proxied through nginx,
+    # so we don't really worry about setting what
+    # IP to run the webserver on.

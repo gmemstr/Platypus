@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>GGServers | Platypus</title>
+    <meta name="description" content="GGServers Panel Stats">
+    <meta name="author" content="Gabriel Simmer, GGServers Ltd">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'index.css') }}">
+
+</head>
+
+<body>
+    <h1>GGServers Server Status</h1>
+    <p>Lorem Ipsum Dollar Emmett</p>
+
+    <dl>
+        {% for s in stats %}
+            <dt>Panel {{ s[0] }}</dt>
+            <dd>Location: {{ s[1]['location'] }}</dd>
+            <dd>CPU %: {{ s[1]['cpu'] }}</dd>
+            <dd>Memory %: {{ s[1]['mem'] }}</dd>
+            <dd>Disk %: {{ s[1]['disk'] }}</dd>
+        {% endfor %}
+    </dl>
+
+</body>
+
+</html>

@@ -1,3 +1,6 @@
+# Old scanning script, kept around
+# for future reference on how NOT to
+# do things :p ~GS
 import requests
 import json
 import time
