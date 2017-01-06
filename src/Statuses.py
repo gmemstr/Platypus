@@ -12,28 +12,34 @@ def Scan():
     file = open("json/servers.json", "r").read()
     s_list = json.loads(file)
 
-    s_stats = {}  # Collection of up panels and their status
+    s_stats = {}  # Collection of all panels and their status
 
     for s in s_list:
         # Iterate through the list of servers
         try:
             # @TODO write custom script for servers
-            # and implement path of script here --v
-            request = requests.get("http://" + s["hostname"],
+            request = requests.get("http://" + s["hostname"] + "/platy/",
                                    timeout=1)  # Timeout of 1 second
             print(s["name"] + " - online")
-            # s_stat = request.json()
+
+            # Strip out int from name of panel
             s_num = int(re.search(r'\d+', s["name"]).group())
+
             s_stats[s_num] = {"location": s["location"],
                               "online": True,
                               "cpu": 34,  # CPU
                               "mem": 42,  # RAM
                               "disk": 42}  # Disk
             # Outputted JSON:
-            # [ "Panel 3": {"cpu":75,"mem":70,"disk":65} ]
-            # Values in percentages used
+            # [ "3": {"cpu":34,"mem":42,"disk":42} ]
+            # Filters out just the int from the name
+            # for easier sorting later
 
         except:
+            # If panel is down, the request will throw an
+            # exception. We handle that exception by marking
+            # the panel as "down" in cache and setting values
+            # to zero.
             print(s["name"] + " - too long to respond (1s)")
             s_num = int(re.search(r'\d+', s["name"]).group())
             s_stats[s_num] = {"location": s["location"],
@@ -46,11 +52,14 @@ def Scan():
     Stash(s_stats, "json/stats.json", False)
 
     return "Done"  # Don't really need to return anything
+    # But... well... I don't know why I do
 
 
+# Look function for scanning every 300 seconds
+# or 5 minutes
 def Loop():
     Scan()
-    # Call loop again in 5 minutes
     threading.Timer(300, Loop).start()
 
+# Finally call loop function
 Loop()
