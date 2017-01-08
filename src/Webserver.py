@@ -13,7 +13,7 @@ app = Flask(__name__)
 @app.route('/')
 def Index():
     return render_template("index.html",
-                           stats=sorted(Fetch("json/stats.json", False).items(),
+                           stats=sorted(Fetch("stats", False).items(),
                                         key=lambda i: int(i[0])))
 
 

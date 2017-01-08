@@ -4,13 +4,19 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	background-color: #f9f9f9;
 }
-.list {
-	position: fixed;
-	top: 30%;
-	left: 50%;
-	/* bring your own prefixes */
-	transform: translate(-50%, -50%);
-	text-align: center;
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
 }
 .options {
 	text-align: center;

@@ -9,7 +9,7 @@ def Scan():
     # New scan method incorporates server stats
     # from new custom script located on each panel
     # hopefully
-    file = open("json/servers.json", "r").read()
+    file = open("cache/servers.json", "r").read()
     s_list = json.loads(file)
 
     s_stats = {}  # Collection of all panels and their status
@@ -18,7 +18,7 @@ def Scan():
         # Iterate through the list of servers
         try:
             # @TODO write custom script for servers
-            request = requests.get("http://" + s["hostname"] + "/platy/",
+            request = requests.get("http://" + s["hostname"],
                                    timeout=1)  # Timeout of 1 second
             print(s["name"] + " - online")
 
@@ -49,7 +49,7 @@ def Scan():
                               "disk": 0}  # Disk
 
     # Stash results
-    Stash(s_stats, "json/stats.json", False)
+    Stash(s_stats, "stats", False)
 
     return "Done"  # Don't really need to return anything
     # But... well... I don't know why I do
@@ -61,5 +61,4 @@ def Loop():
     Scan()
     threading.Timer(300, Loop).start()
 
-# Finally call loop function
 Loop()

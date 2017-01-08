@@ -42,14 +42,14 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
 
 
 def run():
-    print('starting server...')
+    print('starting platypus client webserver')
 
     # Server settings
     # Choose port 8080, for port 80, which is normally used for a http server,
     # you need root access
     server_address = ('127.0.0.1', 9000)
     httpd = HTTPServer(server_address, testHTTPServer_RequestHandler)
-    print('running server...')
+    print('running, listening on 127.0.0.1:9000')
     print('press ctrl+c to exit')
     httpd.serve_forever()
 
