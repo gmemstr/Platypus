@@ -28,3 +28,8 @@ h1 {
 h2 {
 	font-size: 3vh;
 }
+strong {
+	color: #f44b42;
+	font-size: 75%;
+	font-weight: bolder;
+}

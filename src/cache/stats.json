@@ -1,492 +1,492 @@
 {
     "3": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "6": {
-        "disk": 0,
+        "location": "EU",
         "mem": 0,
-        "cpu": 0,
         "online": false,
-        "location": "EU"
+        "cpu": 0,
+        "disk": 0
     },
     "7": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "13": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "20": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "34": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "38": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "43": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "47": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "49": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "57": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "60": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "62": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "64": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "65": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "66": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "67": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "68": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "69": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "70": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "71": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "72": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "73": {
-        "disk": 0,
-        "mem": 0,
-        "cpu": 0,
-        "online": false,
-        "location": "MT"
+        "location": "MT",
+        "mem": 42,
+        "online": true,
+        "cpu": 34,
+        "disk": 42
     },
     "77": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "78": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "79": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "80": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "81": {
-        "disk": 0,
-        "mem": 0,
-        "cpu": 0,
-        "online": false,
-        "location": "MT"
+        "location": "MT",
+        "mem": 42,
+        "online": true,
+        "cpu": 34,
+        "disk": 42
     },
     "82": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "83": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "85": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "86": {
-        "disk": 0,
-        "mem": 0,
-        "cpu": 0,
-        "online": false,
-        "location": "EU"
+        "location": "EU",
+        "mem": 42,
+        "online": true,
+        "cpu": 34,
+        "disk": 42
     },
     "87": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "88": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "89": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "91": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "93": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "94": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "95": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "96": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "97": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "98": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "99": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "100": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "101": {
-        "disk": 0,
-        "mem": 0,
-        "cpu": 0,
-        "online": false,
-        "location": "MT"
+        "location": "MT",
+        "mem": 42,
+        "online": true,
+        "cpu": 34,
+        "disk": 42
     },
     "102": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "103": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "104": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "106": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "107": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "108": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "109": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "110": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "111": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "112": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "113": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "114": {
-        "disk": 42,
+        "location": "MT",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "MT"
+        "cpu": 34,
+        "disk": 42
     },
     "115": {
-        "disk": 42,
+        "location": "LA",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "LA"
+        "cpu": 34,
+        "disk": 42
     },
     "116": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "117": {
-        "disk": 42,
+        "location": "LA",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "LA"
+        "cpu": 34,
+        "disk": 42
     },
     "118": {
-        "disk": 42,
+        "location": "LA",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "LA"
+        "cpu": 34,
+        "disk": 42
     },
     "119": {
-        "disk": 42,
+        "location": "LA",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "LA"
+        "cpu": 34,
+        "disk": 42
     },
     "120": {
-        "disk": 42,
+        "location": "LA",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "LA"
+        "cpu": 34,
+        "disk": 42
     },
     "121": {
-        "disk": 42,
+        "location": "LA",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "LA"
+        "cpu": 34,
+        "disk": 42
     },
     "122": {
-        "disk": 0,
+        "location": "LA",
         "mem": 0,
-        "cpu": 0,
         "online": false,
-        "location": "LA"
+        "cpu": 0,
+        "disk": 0
     },
     "123": {
-        "disk": 42,
+        "location": "LA",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "LA"
+        "cpu": 34,
+        "disk": 42
     },
     "124": {
-        "disk": 42,
+        "location": "EU",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "EU"
+        "cpu": 34,
+        "disk": 42
     },
     "125": {
-        "disk": 42,
-        "mem": 42,
-        "cpu": 34,
-        "online": true,
-        "location": "LA"
+        "location": "LA",
+        "mem": 0,
+        "online": false,
+        "cpu": 0,
+        "disk": 0
     },
     "126": {
-        "disk": 42,
+        "location": "LA",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "LA"
+        "cpu": 34,
+        "disk": 42
     },
     "127": {
-        "disk": 42,
+        "location": "LA",
         "mem": 42,
-        "cpu": 34,
         "online": true,
-        "location": "LA"
+        "cpu": 34,
+        "disk": 42
     }
 }
