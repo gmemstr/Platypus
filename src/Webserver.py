@@ -20,7 +20,7 @@ def Index():
 
 @app.route('/raw')
 def ReturnRawStats():
-    file = open("json/stats.json", "r").read()
+    file = open("cache/cache.json", "r").read()
     return file
 
 
