@@ -1,38 +1,49 @@
 <?php
-// PHP index file for Platypus-compatibility.
-// This script is for Linux only, rename index.php.windows
-// to index.php for the Windows script
-// Credit for script: https://stackoverflow.com/questions/22949295/how-do-you-get-server-cpu-usage-and-ram-usage-with-php
 
-function get_server_memory_usage(){
+$fh = fopen('/proc/meminfo', 'r');
+  $mem = 0;
+  while ($line = fgets($fh)) {
+    $pieces = array();
+    if (preg_match('/^MemTotal:\s+(\d+)\skB$/', $line, $pieces)) {
+      $memtotal = $pieces[1];
+    }
+    if (preg_match('/^MemFree:\s+(\d+)\skB$/', $line, $pieces)) {
+      $memfree = $pieces[1];
+    }
+    if (preg_match('/^Cached:\s+(\d+)\skB$/', $line, $pieces)) {
+      $memcache = $pieces[1];
+      break;
+    }
+  }
+fclose($fh);
 
-    $free = shell_exec('free');
-    $free = (string)trim($free);
-    $free_arr = explode("\n", $free);
-    $mem = explode(" ", $free_arr[1]);
-    $mem = array_filter($mem);
-    $mem = array_merge($mem);
-    $memory_usage = $mem[2]/$mem[1]*100;
+$stat1 = file('/proc/stat');
+sleep(1);
+$stat2 = file('/proc/stat');
+$info1 = explode(" ", preg_replace("!cpu +!", "", $stat1[0]));
+$info2 = explode(" ", preg_replace("!cpu +!", "", $stat2[0]));
+$dif = array();
+$dif['user'] = $info2[0] - $info1[0];
+$dif['nice'] = $info2[1] - $info1[1];
+$dif['sys'] = $info2[2] - $info1[2];
+$dif['idle'] = $info2[3] - $info1[3];
+$total = array_sum($dif);
+$cpu = array();
+foreach($dif as $x=>$y) $cpu[$x] = round($y / $total * 100, 1);
+$array['cpu'] = $cpu['user'];
 
-    return $memory_usage;
-}
+$memmath = $memcache + $memfree;
+$memmath2 = $memmath / $memtotal * 100;
+$memory = round($memmath2);
 
-function get_server_cpu_usage(){
+$array['memory'] = $memory;
 
-    $load = sys_getloadavg();
-    return $load[0];
+$hddtotal = disk_total_space("/");
+$hddfree = disk_free_space("/");
+$hddmath = $hddfree / $hddtotal * 100;
+$hdd = round($hddmath);
 
-}
+$array['hdd'] = $hdd;
 
-function stats(){
-    $s = new stdClass();
-    // $s->cpu = get_server_cpu_usage();
-    $s->memory = get_server_memory_usage();
-    $s->disk = disk_free_space('/') / disk_total_space('/');
-
-    return $s;
-}
-
-echo json_encode(stats());
-
+echo json_encode($array);
 ?>

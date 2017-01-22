@@ -8,7 +8,7 @@ import time
 def Stash(data, filename, timelog=True):
     today = time.strftime("%x")
 
-    with open("cache/" + filename + ".json") as cache:
+    with open("src/cache/" + filename + ".json") as cache:
         _cache = json.load(cache)
 
     if timelog:
@@ -16,14 +16,14 @@ def Stash(data, filename, timelog=True):
     else:
         _cache = data
 
-    with open("cache/" + filename + ".json", "w") as cache:
+    with open("src/cache/" + filename + ".json", "w") as cache:
         json.dump(_cache, cache, indent=4)
 
 
 def Fetch(filename, timelog=True, range="today"):
     today = time.strftime("%x")
 
-    with open("cache/" + filename + ".json") as cache:
+    with open("src/cache/" + filename + ".json") as cache:
         _data = json.load(cache)
 
     if timelog:
