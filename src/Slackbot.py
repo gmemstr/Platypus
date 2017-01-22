@@ -1,35 +1,42 @@
 from slackclient import SlackClient
-from Cache import Fetch
+from src.Cache import Fetch
+from src.Config import Config
 import threading
 
-token = "YOUR_SLACK_TOKEN_HERE"
+config = Config()
+token = config.Get("slack_api_key")
 sc = SlackClient(token)
 
+class Bot:
 
-def Post(message, channel, username, icon):
-    return sc.api_call(
-        "chat.postMessage", channel=channel, text=message,
-        username=username, icon_emoji=icon)
-
-
-def BuildMessage(data):
-    channel = "#dept-development"
-    username = "Platypus"
-    icon = ":desktop_computer:"
-    message = "Some panels are offline! "
-    for s in data:
-        if data[s]['online'] is False:
-            message = message + " Panel " + str(s)
-    Post(message, channel, username, icon)
+    def Post(self,message, channel, username, icon):
+        return sc.api_call(
+            "chat.postMessage", channel=channel, text=message,
+            username=username, icon_emoji=icon)
 
 
-def Data():
-    data = Fetch("stats", False)
-    BuildMessage(data)
+    def BuildMessage(self,data):
+        post = True
+        off = 0
+        channel = "@gabes"
+        username = "Platypus"
+        icon = ":desktop_computer:"
+        message = "Some panels may be offline!"
+        for s in sorted(data):
+            if data[s]['online'] is False:
+                message = message + " Panel " + str(s)
+                off = off + 1
+
+            if off > 1: post = True
+            else: post = False
+
+        if post is True: self.Post(message, channel, username, icon)
 
 
-def Loop():
-    Data()
-    threading.Timer(3600, Loop).start()
+    def Data(self):
+        data = Fetch("stats", False)
+        self.BuildMessage(data)
 
-Loop()
+    def Loop(self):
+        self.Data()
+        threading.Timer(3600, self.Loop).start()

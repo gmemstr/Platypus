@@ -17,14 +17,14 @@ alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribb
 <h1>GGServers Server Status</h1>
 <p>Quickly check whether your server is offline or not</p>
 
-<table>
+<table id="table">
     <th>Panel</th>
     <th>Location</th>
     <th>CPU</th>
     <th>Memory</th>
     <th>Disk</th>
     {% for s in stats %}
-    <tr>
+    <tr id="{{ s[0] }}">
         <td>{% if s[1]['online'] != True %}<strong>OFFLINE</strong>{% endif %}Panel {{ s[0] }}</td>
         <td>{{ s[1]['location'] }}</td>
         <td>{{ s[1]['cpu'] }}%</td>

@@ -1,0 +1,15 @@
+{
+    "comments": [
+        "This is the config file for Platypus.",
+        "These comments are ignored. If you need",
+        "any guidance see the README"
+    ],
+    "enable_slackbot": true,
+    "enable_webserver": true,
+    "slack_api_key": "YOUR_API_KEY",
+    "slack_interval": 3600,
+    "scan_interval": 300,
+    "scan_timeout": 5,
+    "stats_enabled": true,
+    "stats_path": "/platy"
+}
