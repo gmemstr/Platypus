@@ -4,15 +4,15 @@ function RefreshStats() {
     table = document.getElementById("table");
 
     for (var i = 0, row; row = table.rows[i]; i++) {
-        console.log(row);
-        // Request("https://mc34.ggservers.com", SetStats());
+        // console.log(row.id);
+        Request("https://mc" +row.id+ ".ggservers.com/platy/", SetStats());
     }
 }
 
 // Function that places stats where
 // they belong *grumble callbacks grumble*
 function SetStats(stats, panel) {
-
+    console.log(stats)
 }
 
 function Request(url, callback, method = "GET") {
@@ -24,4 +24,8 @@ function Request(url, callback, method = "GET") {
         if (request.readyState == 4 && xmlHttp.status == 200)
             callback(request.responseText);
     }
+}
+
+function toggleNight(){
+    document.body.classList.toggle("night-mode");
 }

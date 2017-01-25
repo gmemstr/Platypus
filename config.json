@@ -4,9 +4,10 @@
         "These comments are ignored. If you need",
         "any guidance see the README"
     ],
-    "enable_slackbot": true,
+    "enable_slackbot": false,
     "enable_webserver": true,
-    "slack_api_key": "YOUR_API_KEY",
+    "slack_api_key": "",
+    "slack_channel": "",
     "slack_interval": 3600,
     "scan_interval": 300,
     "scan_timeout": 5,
