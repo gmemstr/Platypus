@@ -19,22 +19,23 @@ if __name__ == "__main__":
     if config.Get("enable_webserver") is True and config.Get("enable_slackbot") is True:
         print("Webserver starting up")
         print("Slackbot enabled.")
-        wsp = Process(target=ws.Run()).start()
         sbp = Process(target=sb.Loop()).start()
+        scnp = Process(target=scn.Loop()).start()
+        wsp = Process(target=ws.Run()).start()
 
     elif config.Get("enable_webserver") is True:
         print("Webserver starting up")
+        #scnp = Process(target=scn.Loop()).start()
         wsp = Process(target=ws.Run()).start()
 
 
     elif config.Get("enable_slackbot") is True:
         print("Slackbot enabled")
+        scnp = Process(target=scn.Loop()).start()
         sbp = Process(target=sb.Loop()).start()
 
 
     else: 
         print("No frontends enabed. Scanning to cache only.")
-        
-    scn.Loop()
-
+        scn.Loop()
 

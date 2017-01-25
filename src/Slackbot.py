@@ -4,6 +4,7 @@ from src.Config import Config
 import threading
 
 config = Config()
+channel = config.Get("slack_channel")
 token = config.Get("slack_api_key")
 sc = SlackClient(token)
 
