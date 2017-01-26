@@ -3,6 +3,9 @@ import json
 from src.Cache import Stash
 import re
 import threading
+from src.Config import Config
+
+config = Config()
 
 class Scanning:
 
@@ -21,18 +24,25 @@ class Scanning:
           # Attempts to fetch platy stats from panel.
           # If it results in a 404 we'll handle that with
           # blank statistics, but mark the panel as "online"
-          request = requests.get("http://" + s["hostname"] + "/platy/",
-                                 timeout=1)
+          request = requests.get("http://" + s["hostname"] + config.Get("stats_path"),
+                                 timeout=config.Get("scan_timeout"))
           print(s["name"] + " - online")
 
           # Strip out int from name of panel
           s_num = int(re.search(r'\d+', s["name"]).group())
-
-          s_stats[s_num] = {"location": s["location"],
+          if request.status_code == 404:
+            s_stats[s_num] = {"location": s["location"],
                             "online": True,
-                            "cpu": 34,  # CPU
-                            "mem": 42,  # RAM
-                            "disk": 42}  # Disk
+                            "cpu": 0,  # CPU
+                            "mem": 0,  # RAM
+                            "disk": 0}  # Disk  
+          else:
+            data = request.json()
+            s_stats[s_num] = {"location": s["location"],
+                              "online": True,
+                              "cpu": data["cpu"],  # CPU
+                              "mem": data["memory"],  # RAM
+                              "disk": data["disk"]}  # Disk
           # Outputted JSON:
           # [ "3": {"cpu":34,"mem":42,"disk":42} ]
           # Filters out just the int from the name
@@ -58,4 +68,4 @@ class Scanning:
 
   def Loop(self):
     self.Scan()
-    threading.Timer(300, self.Loop).start()
+    threading.Timer(config.Get("scan_interval"), self.Loop).start()

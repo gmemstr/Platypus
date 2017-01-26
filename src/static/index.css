@@ -4,7 +4,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	background-color: #f9f9f9;
 }
-.night-mode {
+.nightmode {
     background-color: #1B2836;
     color: #C7CBCE;
 }
@@ -19,10 +19,10 @@ td{
     width: 20%;
     padding: 8px;
 }
-.night-mode td {
+.nightmode td {
     border: none;
 }
-.night-mode strong {
+.nightmode strong {
     color: #1DA1F2;
 }
 .toggs {
@@ -31,13 +31,13 @@ td{
 th {
     background: #f9f9f9; text-align: center; padding: 10px;
 }
-.night-mode th {
+.nightmode th {
     background-color: #1B2836;
 }
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
-.night-mode tr:nth-child(even) {
+.nightmode tr:nth-child(even) {
     background-color: #414F5C;
 }
 .options {

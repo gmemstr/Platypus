@@ -19,7 +19,7 @@ class Bot:
     def BuildMessage(self,data):
         post = True
         off = 0
-        channel = "@gabes"
+        channel = config.Get("slack_channel")
         username = "Platypus"
         icon = ":desktop_computer:"
         message = "Some panels may be offline!"
@@ -40,4 +40,4 @@ class Bot:
 
     def Loop(self):
         self.Data()
-        threading.Timer(3600, self.Loop).start()
+        threading.Timer(config.Get("slack_interval"), self.Loop).start()
