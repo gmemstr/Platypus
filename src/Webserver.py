@@ -1,5 +1,5 @@
 # Python modules
-from flask import Flask, render_template, send_from_directory, jsonify
+from flask import Flask, render_template, abort
 import time
 import threading
 
@@ -13,14 +13,16 @@ app = Flask(__name__)
 @app.route('/')
 def Index():
     return render_template("index.html",
-                           stats=sorted(Fetch("stats", False).items(),
-                                        key=lambda i: int(i[0])))
+                           stats=Fetch("stats", False).items())
 
 
-@app.route('/raw')
-def ReturnRawStats():
-    file = open("src/cache/stats.json", "r").read()
-    return file
+@app.route('/raw/<filename>')
+def ReturnRawStats(filename):
+    try:
+        file = open("src/cache/"+filename+".json", "r").read()
+        return file
+    except:
+        abort(404)
 
 class Webserver:
     def Run(self):

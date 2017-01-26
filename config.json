@@ -11,6 +11,5 @@
     "slack_interval": 3600,
     "scan_interval": 300,
     "scan_timeout": 5,
-    "stats_enabled": true,
     "stats_path": "/platy"
 }

@@ -31,7 +31,8 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
         self.send_response(200)
 
         # Send headers
-        self.send_header('Content-type', 'text/html')
+        self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
 
         # Send message back to client
@@ -45,8 +46,6 @@ def run():
     print('starting platypus client webserver')
 
     # Server settings
-    # Choose port 8080, for port 80, which is normally used for a http server,
-    # you need root access
     server_address = ('127.0.0.1', 9000)
     httpd = HTTPServer(server_address, testHTTPServer_RequestHandler)
     print('running, listening on 127.0.0.1:9000')
