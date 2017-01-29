@@ -1,7 +1,5 @@
 # Python modules
 from flask import Flask, render_template, abort
-import time
-import threading
 
 # Custom imports
 from src.Cache import Fetch

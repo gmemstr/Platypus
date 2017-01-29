@@ -4,7 +4,7 @@ from src.Webserver import Webserver
 from src.Slackbot import Bot
 from src.Config import Config
 from src.Statuses import Scanning
-
+    
 config = Config()
 ws  = Webserver()
 scn = Scanning()
