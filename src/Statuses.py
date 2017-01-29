@@ -19,43 +19,41 @@ class Scanning:
     s_stats = {}  # Collection of all panels and their status
 
     for s in s_list:
+      id = s["id"]
       # Iterate through the list of servers
       try:
           # Attempts to fetch platy stats from panel.
-          # If it results in a 404 we'll handle that with
-          # blank statistics, but mark the panel as "online"
           request = requests.get("http://" + s["hostname"] + config.Get("stats_path"),
                                  timeout=config.Get("scan_timeout"))
           print(s["name"] + " - online")
 
-          # Strip out int from name of panel
-          s_num = int(re.search(r'\d+', s["name"]).group())
+          # If panel responds with 404, we assume platypus
+          # status script was not deployed (properly?)
           if request.status_code == 404:
-            s_stats[s_num] = {"location": s["location"],
+            s_stats[id] = {"name": s["name"],
+                            "location": s["location"],
                             "online": True,
                             "cpu": 0,  # CPU
                             "mem": 0,  # RAM
                             "disk": 0}  # Disk  
           else:
             data = request.json()
-            s_stats[s_num] = {"location": s["location"],
+            s_stats[id] = {"name": s["name"],
+                              "location": s["location"],
                               "online": True,
                               "cpu": data["cpu"],  # CPU
                               "mem": data["memory"],  # RAM
                               "disk": data["disk"]}  # Disk
           # Outputted JSON:
-          # [ "3": {"cpu":34,"mem":42,"disk":42} ]
-          # Filters out just the int from the name
-          # for easier sorting later
-          # @TODO Write if clause regarding 404
+          # [ "3": {"name": "Panel 3", cpu":34,"mem":42,"disk":42} ]
       except:
           # If panel is down, the request will throw an
           # exception. We handle that exception by marking
           # the panel as "down" in cache and setting values
           # to zero.
-          print(s["name"] + " - too long to respond (1s)")
-          s_num = int(re.search(r'\d+', s["name"]).group())
-          s_stats[s_num] = {"location": s["location"],
+          print(s["name"] + " - too long to respond, possibly offline")
+          s_stats[id] = {"name": s["name"],
+                            "location": s["location"],
                             "online": False,
                             "cpu": 0,  # CPU
                             "mem": 0,  # RAM
