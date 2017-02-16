@@ -1,4 +1,3 @@
-import json
 from multiprocessing import Process
 from src.Webserver import Webserver
 from src.Slackbot import Bot
@@ -19,13 +18,17 @@ if __name__ == "__main__":
     if config.Get("enable_webserver") is True and config.Get("enable_slackbot") is True:
         print("Webserver starting up")
         print("Slackbot enabled.")
+
+        # The order in which the processes are started
+        # is important, since the flask process effectively
+        # blocks the rest of the code from running (wtfkwbtihiw)
         sbp = Process(target=sb.Loop()).start()
         scnp = Process(target=scn.Loop()).start()
         wsp = Process(target=ws.Run()).start()
 
     elif config.Get("enable_webserver") is True:
         print("Webserver starting up")
-        scnp = Process(target=scn.Loop()).start()
+        # scnp = Process(target=scn.Loop()).start()
         wsp = Process(target=ws.Run()).start()
 
 

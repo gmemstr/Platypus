@@ -9,7 +9,6 @@ token = config.Get("slack_api_key")
 sc = SlackClient(token)
 
 class Bot:
-
     def Post(self,message, channel, username, icon):
         return sc.api_call(
             "chat.postMessage", channel=channel, text=message,

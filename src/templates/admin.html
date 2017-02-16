@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Platypus Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'admin.css') }}">
+</head>
+
+<body>
+    <h1>Platypus Admin</h1>
+
+    <h2>Edit Server List</h2>
+    <table id="table">
+    <th>Panel</th>
+    <th>Actions</th>
+    {% for s in servers %}
+    <tr id="{{ s['id'] }}">
+        <td>{{ s['name'] }}</td>
+        <td>Edit Remove Clone</td>
+    </tr>
+    {% endfor %}
+</table>
+    <hr />
+
+    <h2>Configuration</h2>
+    {% for c in configs %}
+        {% if c != "comments" %}
+            <label for="{{ c }}">{{ c }}</label>
+            <input type="text" id="{{ c }}" value="{{ configs[c] }}"><br />
+        {% endif %}
+    {% endfor %}
+</body>
+</html>

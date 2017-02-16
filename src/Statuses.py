@@ -1,7 +1,6 @@
 import requests
 import json
-from src.Cache import Stash
-import re
+from src.Cache import Stash, Fetch
 import threading
 from src.Config import Config
 
@@ -12,11 +11,8 @@ class Scanning:
   def Scan(self):
     # New scan method incorporates server stats
     # from new custom script located on each panel
-    # hopefully
-    file = open("src/cache/servers.json", "r").read()
-    s_list = json.loads(file)
-
-    s_stats = {}  # Collection of all panels and their status
+    s_list = Fetch("servers", False)
+    s_stats = {}
 
     for s in s_list:
       id = s["id"]
@@ -33,9 +29,9 @@ class Scanning:
             s_stats[id] = {"name": s["name"],
                             "location": s["location"],
                             "online": True,
-                            "cpu": 0,  # CPU
-                            "mem": 0,  # RAM
-                            "disk": 0}  # Disk  
+                            "cpu": "n/a",  # CPU
+                            "mem": "n/a",  # RAM
+                            "disk": "n/a"}  # Disk  
           else:
             data = request.json()
             s_stats[id] = {"name": s["name"],
@@ -47,11 +43,7 @@ class Scanning:
           # Outputted JSON:
           # [ "3": {"name": "Panel 3", cpu":34,"mem":42,"disk":42} ]
       except:
-          # If panel is down, the request will throw an
-          # exception. We handle that exception by marking
-          # the panel as "down" in cache and setting values
-          # to zero.
-          print(s["name"] + " - too long to respond, possibly offline")
+          print(s["name"] + " - offline")
           s_stats[id] = {"name": s["name"],
                             "location": s["location"],
                             "online": False,

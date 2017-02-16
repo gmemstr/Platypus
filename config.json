@@ -2,14 +2,19 @@
     "comments": [
         "This is the config file for Platypus.",
         "These comments are ignored. If you need",
-        "any guidance see the README"
+        "any guidance see the README",
+        "Default password is p1atyPus, run python src/Login.py to",
+        "generate a new one."
     ],
     "enable_slackbot": false,
     "enable_webserver": true,
+    "webserver_port": 8080,
     "slack_api_key": "",
     "slack_channel": "",
     "slack_interval": 3600,
     "scan_interval": 300,
     "scan_timeout": 5,
-    "stats_path": "/platy"
+    "stats_path": "/platy",
+    "admin_username": "admin",
+    "admin_password": "$2b$12$q1oiev5KEoOPvWJe7b5xuOm3PU61Ks9c2Y9e4ZFzS1YzJtsFLBBBK"
 }
