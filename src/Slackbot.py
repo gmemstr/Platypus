@@ -1,5 +1,5 @@
 from slackclient import SlackClient
-from src.Cache import Fetch
+from src.Cache import Handler
 from src.Config import Config
 import threading
 

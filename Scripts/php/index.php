@@ -45,5 +45,12 @@ $hdd = round($hddmath);
 
 $array['hdd'] = $hdd;
 
+// RETURNS
+// USED CPU
+// USED MEMORY
+// FREE HDD
+// IN PERCENTAGES
+// YA NUMPTY
+
 echo json_encode($array);
 ?>

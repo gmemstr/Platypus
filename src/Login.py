@@ -19,12 +19,11 @@ class LoginManager:
                 return False
 
 class User:
-
     def __init__(self):
         self.id = ""
 
-    def UserID(self, uid):
-        if self.id == "" and uid != None:
+    def UserID(self, uid, set=False):
+        if self.id == "" and uid != None or set == True:
             print("set uid")
             self.id = uid
         elif self.id == uid:

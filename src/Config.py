@@ -20,3 +20,4 @@ class Config:
         json.dump(open("config.json"), config, indent=4)
 
         return true
+                

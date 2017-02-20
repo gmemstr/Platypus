@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     elif config.Get("enable_webserver") is True:
         print("Webserver starting up")
-        # scnp = Process(target=scn.Loop()).start()
+        scnp = Process(target=scn.Loop()).start()
         wsp = Process(target=ws.Run()).start()
 
 

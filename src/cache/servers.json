@@ -99,7 +99,6 @@
         "id": 67,
         "name": "Panel 67",
         "hostname": "mc67.ggservers.com",
-        "hddSpace": "128 GB",
         "location": "EU"
     },
     {
@@ -198,12 +197,6 @@
         "name": "Panel 87",
         "hostname": "mc87.ggservers.com",
         "location": "MT"
-    },
-    {
-        "id": 88,
-        "name": "Panel 88",
-        "hostname": "mc88.ggservers.com",
-        "location": "EU"
     },
     {
         "id": 89,
@@ -383,12 +376,6 @@
         "id": 121,
         "name": "Panel 121",
         "hostname": "mc121.ggservers.com",
-        "location": "LA"
-    },
-    {
-        "id": 122,
-        "name": "Panel 122",
-        "hostname": "mc122.ggservers.com",
         "location": "LA"
     },
     {
