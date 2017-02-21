@@ -7,7 +7,7 @@
         "generate a new one."
     ],
     "enable_slackbot": false,
-    "enable_webserver": false,
+    "enable_webserver": true,
     "webserver_port": 8080,
     "slack_api_key": "",
     "slack_channel": "",

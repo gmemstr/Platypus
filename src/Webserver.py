@@ -1,31 +1,37 @@
 # Python modules
-from flask import Flask, render_template, abort, g, request, redirect, url_for
+from flask import Flask, render_template, abort, g, request, redirect, url_for, jsonify
+import requests
 
 # Custom imports
 from src.Login import LoginManager, User
 from src.Cache import Handler
 from src.Config import Config
+from src.Statuses import Scanning
 
 lm = LoginManager()
 user = User()
 config = Config()
+handler = Handler()
+scan = Scanning()
 
 app = Flask(__name__)
 
 @app.route('/')
 def Index():
     return render_template("index.html",
-                           stats=Fetch("stats", False).items())
+                           stats=handler.Get())
 
 
-# @TODO: Make it impossible to get at config.json
-@app.route('/raw/<filename>')
-def ReturnRawStats(filename):
-    try:
-        file = open("src/cache/"+filename+".json", "r").read()
-        return file
-    except:
-        abort(404)
+# @TODO: Rewrite with MySQL
+@app.route('/raw')
+def ReturnRawStats():
+    res =  handler.GetAsJson()
+    return jsonify(res)
+
+@app.route('/fetch/<panel>')
+def MiddlemanStat(panel):
+    res = scan.Fetch(panel)
+    return jsonify(res)
 
 # TODO: Finish login!
 @app.route("/login", methods=["GET", "POST"])
@@ -48,7 +54,7 @@ def AdminInterface():
     cuid = request.cookies.get('uid')
     if user.UserID(cuid):
         return render_template("admin.html", 
-                                servers=Fetch("servers", False),
+                                servers=handler.Get(),
                                 configs=config.Get("*"))
     else:
         return redirect(url_for('LoginRoute', next=url_for("AdminInterface")))
@@ -67,6 +73,8 @@ def AdminControl(panelid):
             config.GetServer(panelid)
     else:
         abort(403)
+
+
 
 class Webserver:
     def Run(self):
