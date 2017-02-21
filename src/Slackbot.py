@@ -7,6 +7,7 @@ config = Config()
 channel = config.Get("slack_channel")
 token = config.Get("slack_api_key")
 sc = SlackClient(token)
+handler = Handler()
 
 class Bot:
     def Post(self,message, channel, username, icon):
@@ -34,7 +35,7 @@ class Bot:
 
 
     def Data(self):
-        data = Fetch("stats", False)
+        data = handler.Get(offline="only")
         self.BuildMessage(data)
 
     def Loop(self):

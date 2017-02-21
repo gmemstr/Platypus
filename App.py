@@ -37,7 +37,6 @@ if __name__ == "__main__":
         scnp = Process(target=scn.Loop()).start()
         sbp = Process(target=sb.Loop()).start()
 
-
     else: 
         print("No frontends enabed. Scanning to cache only.")
         scn.Loop()

@@ -61,16 +61,21 @@ def AdminInterface():
 
 @app.route("/ac/<panelid>", methods=["DELETE", "POST", "PUT", "GET"])
 def AdminControl(panelid):
+    if panelid is None:
+        abort(404)
     cuid = request.cookies.get('uid')
     if user.UserID(cuid):
         if request.method == "DELETE":
-            config.RemoveServer(panelid)
+            handler.RemoveServer(panelid)
+            return "Panel " + str(panelid) + " deleted"
         if request.method == "POST":
-            config.CreateServer(panelid, request.form)
+            handler.CreateServer(panelid, request.form)
+            return "Panel " + str(panelid) + " created"
         if request.method == "PUT":
-            config.ModServer(panelid, request.form)
+            handler.ModServer(panelid, request.form)
+            return "Panel " + str(panelid) + " edited"
         if request.method == "GET":
-            config.GetServer(panelid)
+            return jsonify(handler.GetAsJson(panelid))
     else:
         abort(403)
 

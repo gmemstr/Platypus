@@ -21,6 +21,9 @@ class Handler:
         if server == "all":
             self.c.execute("SELECT * FROM server")
             return self.c.fetchall()
+        if online == "only":
+            self.c.execute("SELECT * FROM server WHERE online=false")
+            return self.c.fetchall()
         else:
             self.c.execute("SELECT * FROM server WHERE id="+str(server))
             return self.c.fetchall()
@@ -49,6 +52,23 @@ class Handler:
             self.c.execute("UPDATE server SET online=true, udtime=0, cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))
         self.db.commit()
+
+    def RemoveServer(self, panel):
+        self.c.execute("DELETE FROM server WHERE id="+str(panel))
+        self.db.commit()
+        return True
+    def CreateServer(self, panel, form):
+        # Insert new server into database
+        self.c.execute("INSERT INTO server (id,name,hostname,location) VALUES %s,%s,%s,%s",
+            (form['id'],form['name'],form['hostname'],form['location']))
+        self.db.commit()
+        return True
+    def ModServer(self, panel, form):
+        # Edit server
+        self.c.execute("UPDATE server SET name=%s,hostname=%s WHERE id=%s",
+            (form['name'], form['hostname'], panel))
+        self.db.commit()
+        return True
 
     def GetAsJson(self,server="all",offline="all"):
         raw = self.Get(server,offline)
