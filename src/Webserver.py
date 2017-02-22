@@ -21,8 +21,6 @@ def Index():
     return render_template("index.html",
                            stats=handler.Get())
 
-
-# @TODO: Rewrite with MySQL
 @app.route('/raw')
 def ReturnRawStats():
     res =  handler.GetAsJson()
@@ -30,10 +28,10 @@ def ReturnRawStats():
 
 @app.route('/fetch/<panel>')
 def MiddlemanStat(panel):
+    # Acts as a middleman for CORS reasons
     res = scan.Fetch(panel)
     return jsonify(res)
 
-# TODO: Finish login!
 @app.route("/login", methods=["GET", "POST"])
 def LoginRoute():
     if request.method == 'POST':

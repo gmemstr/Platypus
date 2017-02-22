@@ -14,9 +14,11 @@
     <th>Panel</th>
     <th>Actions</th>
     {% for s in servers %}
-    <tr id="{{ s['id'] }}">
+    <tr id="{{ s[0] }}">
         <td>{{ s['name'] }}</td>
-        <td>Edit Remove Clone</td>
+        <td><a href="#" onlick="edit({{ s[0] }})">Edit</a>
+        <a href="#" onlick="remove({{ s[0] }})">Remove</a>
+        <a href="#" onlick="clone({{ s[0] }})">Clone</a></td>
     </tr>
     {% endfor %}
 </table>
@@ -29,5 +31,29 @@
             <input type="text" id="{{ c }}" value="{{ configs[c] }}"><br />
         {% endif %}
     {% endfor %}
+<script type="text/javascript">
+    function Request(url, callback, method = "GET") {
+        var request = new XMLHttpRequest();
+        request.open(method, url);
+        request.send();
+    
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && xmlHttp.status == 200)
+                callback(request.responseText);
+        }
+    }
+    function RefreshPage() {
+        window.location.reload();
+    }
+    function edit(panel){
+        // @TODO: Add modal/dropdown for panel
+    }
+    function remove(panel){
+        Request("/ac/"+panel,RefreshPage(),"DELETE");
+    }
+    function new(panel){
+        // @TODO: New panel modal
+    }
+</script>
 </body>
 </html>
