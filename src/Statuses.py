@@ -53,9 +53,9 @@ class Scanning:
     res[panel[0]] = {"name": panel[1],
                  "online": panel[4],
                  "location": panel[3],
-                 "cpu": panel[6],
-                 "memory":panel[7],
-                 "disk":panel[8]}
+                 "cpu": cpu,
+                 "memory":memory,
+                 "disk":disk}
 
     return res
 

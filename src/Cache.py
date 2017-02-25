@@ -21,7 +21,7 @@ class Handler:
         if server == "all":
             self.c.execute("SELECT * FROM server")
             return self.c.fetchall()
-        if online == "only":
+        if offline == "only":
             self.c.execute("SELECT * FROM server WHERE online=false")
             return self.c.fetchall()
         else:
