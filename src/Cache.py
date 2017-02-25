@@ -59,8 +59,8 @@ class Handler:
         return True
     def CreateServer(self, panel, form):
         # Insert new server into database
-        self.c.execute("INSERT INTO server (id,name,hostname,location) VALUES %s,%s,%s,%s",
-            (form['id'],form['name'],form['hostname'],form['location']))
+        self.c.execute("INSERT INTO server (id,name,hostname,location) VALUES (%s,%s,%s,%s)",
+            (int(form['id']),form['name'],form['hostname'],form['location']))
         self.db.commit()
         return True
     def ModServer(self, panel, form):

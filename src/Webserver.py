@@ -52,28 +52,27 @@ def AdminInterface():
     cuid = request.cookies.get('uid')
     if user.UserID(cuid):
         return render_template("admin.html", 
-                                servers=handler.Get(),
-                                configs=config.Get("*"))
+                                servers=handler.Get())
     else:
         return redirect(url_for('LoginRoute', next=url_for("AdminInterface")))
 
-@app.route("/ac/<panelid>", methods=["DELETE", "POST", "PUT", "GET"])
-def AdminControl(panelid):
+@app.route("/ac/remove/<panelid>", methods=["DELETE"])
+def DelPanel(panelid):
     if panelid is None:
         abort(404)
     cuid = request.cookies.get('uid')
-    if user.UserID(cuid):
-        if request.method == "DELETE":
-            handler.RemoveServer(panelid)
-            return "Panel " + str(panelid) + " deleted"
-        if request.method == "POST":
-            handler.CreateServer(panelid, request.form)
-            return "Panel " + str(panelid) + " created"
-        if request.method == "PUT":
-            handler.ModServer(panelid, request.form)
-            return "Panel " + str(panelid) + " edited"
-        if request.method == "GET":
-            return jsonify(handler.GetAsJson(panelid))
+    if user.UserID(cuid,set=False):
+        handler.RemoveServer(panelid)
+        return "Panel " + str(panelid) + " deleted"
+    else:
+        abort(403)
+
+@app.route("/ac/new", methods=["POST"])
+def NewPanel():
+    cuid = request.cookies.get('uid')
+    if user.UserID(cuid,set=False):
+        handler.CreateServer(request.form["id"],request.form)
+        return "Panel created"
     else:
         abort(403)
 

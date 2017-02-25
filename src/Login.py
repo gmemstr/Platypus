@@ -23,7 +23,7 @@ class User:
         self.id = ""
 
     def UserID(self, uid, set=False):
-        if self.id == "" and uid != None or set == True:
+        if  set == True:
             print("set uid")
             self.id = uid
         elif self.id == uid:

@@ -10,49 +10,45 @@
     <h1>Platypus Admin</h1>
 
     <h2>Edit Server List</h2>
+    <form action="/ac/new" method="post">
+        <label for="id">Panel ID</label>
+        <input type="id" name="id" id="id">
+        <label for="name">Panel Name</label>
+        <input type="name" name="name" id="name">
+        <label for="hostname">Panel Hostname</label>
+        <input type="hostname" name="hostname" id="hostname">
+        <label for="location">Panel Geolocation</label>
+        <input type="location" name="location" id="location">
+        <input type="submit" value="Submit">
+    </form>
     <table id="table">
     <th>Panel</th>
     <th>Actions</th>
     {% for s in servers %}
     <tr id="{{ s[0] }}">
-        <td>{{ s['name'] }}</td>
-        <td><a href="#" onlick="edit({{ s[0] }})">Edit</a>
-        <a href="#" onlick="remove({{ s[0] }})">Remove</a>
-        <a href="#" onlick="clone({{ s[0] }})">Clone</a></td>
+        <td>{{ s[1] }}</td>
+        <td><button onlick="Remove({{ s[0] }});">Remove</button></td>
     </tr>
     {% endfor %}
 </table>
-    <hr />
-
-    <h2>Configuration</h2>
-    {% for c in configs %}
-        {% if c != "comments" %}
-            <label for="{{ c }}">{{ c }}</label>
-            <input type="text" id="{{ c }}" value="{{ configs[c] }}"><br />
-        {% endif %}
-    {% endfor %}
-<script type="text/javascript">
+<script>
+console.log("Test");
     function Request(url, callback, method = "GET") {
         var request = new XMLHttpRequest();
         request.open(method, url);
         request.send();
     
         request.onreadystatechange = function () {
-            if (request.readyState == 4 && xmlHttp.status == 200)
+            if (request.readyState == 4 && request.status == 200)
                 callback(request.responseText);
         }
     }
     function RefreshPage() {
         window.location.reload();
     }
-    function edit(panel){
-        // @TODO: Add modal/dropdown for panel
-    }
-    function remove(panel){
-        Request("/ac/"+panel,RefreshPage(),"DELETE");
-    }
-    function new(panel){
-        // @TODO: New panel modal
+    function Remove(panel){
+        console.log("Removing panel " +panel)
+        Request("/ac/remove/"+panel,RefreshPage(),"DELETE");
     }
 </script>
 </body>
