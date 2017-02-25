@@ -3,7 +3,9 @@
 [Live Master Branch](https://status.ggserv.xyz)
 
 Scaleable Server Infrastructure Monitoring Python App
+
 (Probably Light and Technically Pretty Unassuming Software)
+
 Even More Buzzwords For SEO Reasons
 
 Monitors and reports statistics of your server infrastucture, including usage statistics, uptime, downtime, etc.
