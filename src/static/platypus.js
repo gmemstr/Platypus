@@ -23,7 +23,7 @@ function RequestStat() {
                 row.cells[4].innerHTML = res[panel]['disk'] + "%";
             }
         });
-        i++;
+        if (i > table.rows.length){ i=0; }else{ i++; }
     }
 }
 

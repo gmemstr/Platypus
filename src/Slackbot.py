@@ -24,7 +24,7 @@ class Bot:
         icon = ":desktop_computer:"
         message = "Some panels may be offline!"
         for s in sorted(data):
-            if data[s]['online'] is False:
+            if data[4] is False:
                 message = message + " Panel " + str(s)
                 off = off + 1
 
