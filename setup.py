@@ -21,7 +21,7 @@ if __name__ == "__main__":
         "name varchar(120), hostname varchar(120),"+
         "location varchar(30) DEFAULT NULL, online boolean DEFAULT true,"+
          "udtime int, cpu int DEFAULT NULL, memory int DEFAULT NULL,"+
-         "disk int DEFAULT NULL)")
+         "disk int DEFAULT NULL, PRIMARY KEY(id))")
     con.commit()
 
     print("SQL Databse created, moving along.")
