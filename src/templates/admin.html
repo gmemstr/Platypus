@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Platypus Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'admin.css') }}">
+</head>
+
+<body>
+    <h1>Platypus Admin</h1>
+
+    <h2>Edit Server List</h2>
+    <form action="/ac/new" method="post">
+        <label for="id">Panel ID</label>
+        <input type="id" name="id" id="id">
+        <label for="name">Panel Name</label>
+        <input type="name" name="name" id="name">
+        <label for="hostname">Panel Hostname</label>
+        <input type="hostname" name="hostname" id="hostname">
+        <label for="location">Panel Geolocation</label>
+        <input type="location" name="location" id="location">
+        <input type="submit" value="Submit">
+    </form>
+    <table id="table">
+    <th>Panel</th>
+    <th>Actions</th>
+    {% for s in servers %}
+    <tr id="{{ s[0] }}">
+        <td>{{ s[1] }}</td>
+        <td><button onlick="Remove({{ s[0] }});">Remove</button></td>
+    </tr>
+    {% endfor %}
+</table>
+<script>
+console.log("Test");
+    function Request(url, callback, method = "GET") {
+        var request = new XMLHttpRequest();
+        request.open(method, url);
+        request.send();
+    
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200)
+                callback(request.responseText);
+        }
+    }
+    function RefreshPage() {
+        window.location.reload();
+    }
+    function Remove(panel){
+        console.log("Removing panel " +panel)
+        Request("/ac/remove/"+panel,RefreshPage(),"DELETE");
+    }
+</script>
+</body>
+</html>

@@ -1,69 +1,71 @@
 # Platypus
-(new) Internal GGServers Status Page Flask Application
 
-Scans servers and caches the results in a .json file that
-is refreshed once the cache has aged 15 minutes or more.
+[Live Master Branch](https://status.ggserv.xyz)
+
+Scaleable Server Infrastructure Monitoring Python App
+
+(Probably Light and Technically Pretty Unassuming Software)
+
+Even More Buzzwords For SEO Reasons
+
+Monitors and reports statistics of your server infrastucture, including usage statistics, uptime, downtime, etc.
 
 ### Current Features
- - Scan servers from .json list
- - Can filter by physical server location
- - Fetch server stats based on script
-- (Optional) Log server stats per-day
+ - Setup script
+ - Scan servers from a SQL database
+ - Log scan results to database
+ - Auto-update uptime or downtime
+ - Auto-post to Slack with scan results
+ - Fetch and save server usage statistics
+ - Provide live server usage statistics with web frontend
+ - Simple JSON API for building apps
 
 ### Planned Features
- - Sleeker webpage
- - Slack bot intergration
- - RESTful API for scanning / fetching results nicely
+ - Cleaner code
+ - Smaller resource footprint
+ - More advanced scanning method
 
 ## Requirements
- - Python 3.x
- - Flask 0.11.x
- - `requests` Python Library
-
- (See `requirements.txt` or run `pip install -r requirements.txt`)
+ - Python 3.x (2.x not officially supported)
+ - pip
+  - `pip install -r requirements.txt`
+ - MariaDB
 
 ## Running
-`Webserver.py` is the primary Python file for running the project. It's
-as simple as:
+Run `python setup.py` to set up your instance, including creating the MariaDB databse and setting an admin password.
 
-```
-git clone https://github.com/ggservers/Platypus
+Finally you can run `python App.py` and go navigate to `127.0.0.1:8080/login` to get to the admin control panel.
 
-cd Platypus
-
-pip install -r requirements.txt
-
-python Webserver.py
-```
-
-The server will then be running on `127.0.0.1:8080`. You will
-need to populate `src/json/servers.json` with your own list of
-servers (described below).
-
+To expose it to the world, I recommend using an [nginx proxy](https://www.nginx.com/resources/admin-guide/reverse-proxy/).
 ## Configuration
-Store all the servers you want to check the status of in `servers.json`.
-The basic layout is like so:
 
 ```
-[
-	{
-		"name" : "Panel 1",
-		"hostname" : "first.gmem.pw",
-		"location" : "MT"
-	},
-	{
-		"name" : "Panel 2",
-		"hostname" : "second.gmem.pw",
-		"location" : "LA"
-	}
-]
+{
+    "comments": [
+        "This is the config file for Platypus.",
+        "These comments are ignored. If you need",
+        "any guidance see the README",
+        "Default password is p1atyPus, run python src/Login.py to",
+        "generate a new one."
+    ],
+    "enable_slackbot": false, // Slackbot intergration
+    "enable_webserver": true, // Webserver toggle
+    "webserver_port": 8080, // Webserver port
+    "slack_api_key": "", // Slack API key 
+    "slack_channel": "", // Channel you'd like to post to
+    "slack_interval": 3600, // Seconds between Slack post
+    "scan_interval": 300, // Seconds betweeen scan
+    "scan_timeout": 5, // Seconds before connection times out
+    				   // More accurate = higher, faster = lower
+    "stats_path": "/status/platypus.php", // Location of status script
+    "admin_username": "admin", // Admin username
+    "admin_password": "$2b$12$q1oiev5KEoOPvWJe7b5xuOm3PU61Ks9c2Y9e4ZFzS1YzJtsFLBBBK", // Admin password (salted & hashed) 
+    "sql_user":"root", // MariaDB Username
+    "sql_host":"localhost", // DB Host
+    "sql_pass": "", // DB Password
+    "sql_db": "server" // DB Table
+}
 ```
-
- - `name`: What you want the server to show up as on the list
-   - Include a unique int ID in the name for sorting / filtering
- - `hostname`: The location of your server. Can be IP or domain.
-   - Path to custom script will be automatically added, see #Script
- - `location`: For geolocation filtering.
 
 ## Script
 
@@ -71,30 +73,41 @@ Included in this repo is a custom script written in various
 languages that Platypus will attempt to fetch for the various
 server stats (memory, CPU and disk usage). It is written in
 Python and PHP, and you can choose whichever one you feel like
-using - Platypus will attempt to discover which version you have
-used.
+using - Platypus does not care which version you use, and will
+still check if your server is offline if it results in a 404.
 
 ### Using Python
-
-Just copy the `Scripts/python/` folder to your servers. Next, you'll need to
-[set up a proxy with nginx](#) that will point towards `127.0.0.1:9000` using
-the path `<server URL>/platy/` (e.g `first.gmem.pw/platy/`). Finally,
-you can go back to the `Scripts/python/` folder and run `Run.sh` (you will
-require `screen`). It will handle everything. If you choose to visit the URL
-for the stats, you will find some json displaying various info about your
-server.
+ - Install Python 3
+ - `pip install psutil`
+ - Move `Stats.py` to your server
+ - `chmod +x Stats.py`
+ - `screen ./Stats.py`
+(Screen is recommended)
+ - [Set up a proxy with nginx](https://www.nginx.com/resources/admin-guide/reverse-proxy/)
 
 ### Using PHP
+ - Move `index.php` to whever your web files are
+  - Feel free to rename `index.php` and put it wherever
+ - Visit the path that corresponds with where you put it
 
-Copy over the contents of `Scripts/php/` to your server directory under a
-directory named `platy/` wherever your webserver files are served from.
-You will require the latest version of PHP and a webserver installed
-(e.g Apache or nginx).
+### Returned data
+ - Used CPU
+ - Used memory
+ - Used disk space
 
+ `{"cpu": 6, "memory": 38, "disk": 8}`
+
+Some stats may vary slightly between script, this is simply due to the methods used to get
+the statistics.
 
 ## Paths
 
-| URL | What |
-| --- | ---- |
-| `/` | Main homepage, loads all servers |
-| `/raw` | Returns raw cache data from `src/json/stats.json` |
+| URL | What | Method |
+| --- | ---- | ---- |
+| `/` | Main homepage, loads all servers | `GET` |
+| `/raw` | Returns raw cache data | `GET` |
+| `/fetch/<panel>` | Get server usage stats live (CORS middleman) | `GET` |
+| `/login` | Login page or POST route | `GET`, `POST` |
+| `/admin` | Admin management page | `GET` (requires admin cookie) |
+| `/ac/remove/<panel>` | Admin route for removing server. | `DELETE` (requires admin cookie) |
+| `/ac/new` | Create new server in database | `POST` |

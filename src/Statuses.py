@@ -1,64 +1,64 @@
 import requests
-import threading
 import json
-from Cache import Stash
-import re
+from src.Cache import Handler
+import threading
+from src.Config import Config
 
+config = Config()
+handler = Handler()
 
-def Scan():
-    # New scan method incorporates server stats
-    # from new custom script located on each panel
-    # hopefully
-    file = open("cache/servers.json", "r").read()
-    s_list = json.loads(file)
+class Scanning:
 
-    s_stats = {}  # Collection of all panels and their status
+  def Fetch(self,panel="all"):
+    if panel == "all":
+      s_list = handler.Get()
+      for s in s_list:
+        self.Scan(s)
+      return "fs"
+    else:
+      s = handler.Get(panel)
+      return self.Scan(s[0])
 
-    for s in s_list:
-        # Iterate through the list of servers
-        try:
-            # @TODO write custom script for servers
-            request = requests.get("http://" + s["hostname"],
-                                   timeout=1)  # Timeout of 1 second
-            print(s["name"] + " - online")
+  def Scan(self, panel):
+    print(panel)
+    id = panel[0]
+    res = {}
+    offline = ""
+    # Iterate through the list of servers
+    try:
+      # TODO: Except if stats are not found but page loads (non-404)
+        # Attempts to fetch platy stats from panel.
+        request = requests.get("http://" + panel[2] + config.Get("stats_path"),
+                               timeout=config.Get("scan_timeout"))
+        print(panel[0], "online")
+        offline = "online"
+        if request.status_code == 404:
+          cpu = 0  # CPU
+          memory = 0  # RAM
+          disk = 0  # Disk
+        else:
+          data = request.json()
+          cpu = data["cpu"]  # CPU
+          memory = data["memory"]  # RAM
+          disk = data["hdd"]  # Disk
+    except Exception as e: 
+        print(panel[1] + " - offline")
+        cpu=0
+        disk=0
+        memory=0
+        status = "offline"
+    
+    handler.SetStatus(id,offline,str(cpu),str(memory),str(disk))
 
-            # Strip out int from name of panel
-            s_num = int(re.search(r'\d+', s["name"]).group())
+    res[panel[0]] = {"name": panel[1],
+                 "online": panel[4],
+                 "location": panel[3],
+                 "cpu": cpu,
+                 "memory":memory,
+                 "disk":disk}
 
-            s_stats[s_num] = {"location": s["location"],
-                              "online": True,
-                              "cpu": 34,  # CPU
-                              "mem": 42,  # RAM
-                              "disk": 42}  # Disk
-            # Outputted JSON:
-            # [ "3": {"cpu":34,"mem":42,"disk":42} ]
-            # Filters out just the int from the name
-            # for easier sorting later
+    return res
 
-        except:
-            # If panel is down, the request will throw an
-            # exception. We handle that exception by marking
-            # the panel as "down" in cache and setting values
-            # to zero.
-            print(s["name"] + " - too long to respond (1s)")
-            s_num = int(re.search(r'\d+', s["name"]).group())
-            s_stats[s_num] = {"location": s["location"],
-                              "online": False,
-                              "cpu": 0,  # CPU
-                              "mem": 0,  # RAM
-                              "disk": 0}  # Disk
-
-    # Stash results
-    Stash(s_stats, "stats", False)
-
-    return "Done"  # Don't really need to return anything
-    # But... well... I don't know why I do
-
-
-# Look function for scanning every 300 seconds
-# or 5 minutes
-def Loop():
-    Scan()
-    threading.Timer(300, Loop).start()
-
-Loop()
+  def Loop(self):
+    self.Fetch()
+    threading.Timer(config.Get("scan_interval"), self.Loop).start()

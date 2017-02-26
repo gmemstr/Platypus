@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # Platypus panel script
 # Runs a minimal HTTP/S server that
 # returns JSON reflecting resource usage
@@ -14,9 +16,9 @@ import json
 
 def Stats():
     s = {}
-    s["cpu"] = psutil.cpu_percent()
-    s["memory"] = psutil.virtual_memory().percent
-    s["disk"] = psutil.disk_usage('/').percent
+    s["cpu"] = round(psutil.cpu_percent()) # Used CPU
+    s["memory"] = round(psutil.virtual_memory().percent) # Used memory
+    s["disk"] = round(psutil.disk_usage('/').percent) # Used disk
     return json.dumps(s)
 
 # Actual minimal HTTP server. Source:
@@ -31,7 +33,8 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
         self.send_response(200)
 
         # Send headers
-        self.send_header('Content-type', 'text/html')
+        self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
 
         # Send message back to client
@@ -45,8 +48,6 @@ def run():
     print('starting platypus client webserver')
 
     # Server settings
-    # Choose port 8080, for port 80, which is normally used for a http server,
-    # you need root access
     server_address = ('127.0.0.1', 9000)
     httpd = HTTPServer(server_address, testHTTPServer_RequestHandler)
     print('running, listening on 127.0.0.1:9000')
