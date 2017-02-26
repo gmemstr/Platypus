@@ -3,7 +3,7 @@
         "This is the config file for Platypus.",
         "These comments are ignored. If you need",
         "any guidance see the README",
-        "Default password is p1atyPus, run python src/Login.py to",
+        "Default password is p1atyPus, run python setup.py to",
         "generate a new one."
     ],
     "enable_slackbot": false,
@@ -16,5 +16,9 @@
     "scan_timeout": 5,
     "stats_path": "/status/platypus.php",
     "admin_username": "admin",
-    "admin_password": "$2b$12$q1oiev5KEoOPvWJe7b5xuOm3PU61Ks9c2Y9e4ZFzS1YzJtsFLBBBK"
+    "admin_password": "$2b$12$5dv0lbCdMhfMniKQ/Fc80O2XXdvCqRpNfv8Cw7Nal8tRxV8SIb4zO",
+    "sql_user": "root",
+    "sql_host": "localhost",
+    "sql_pass": "",
+    "sql_db": "server"
 }

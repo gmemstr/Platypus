@@ -21,7 +21,6 @@ Monitors and reports statistics of your server infrastucture, including usage st
 
 ### Planned Features
  - Cleaner code
- - Autoinstaller script
  - Smaller resource footprint
  - More advanced scanning method
 
@@ -34,14 +33,14 @@ Monitors and reports statistics of your server infrastucture, including usage st
 ## Running
 You'll want to first set up your SQL database - a skeleton file you can import is located in the `Scripts` folder. Else see the SQL database specifications.
 
-_Currently_ you'll want to go through and tweak all the values in `config.json` to the values you want/need. Run `python src/Login.py` to generate a new admin password (the default is `p1atyPus`, PLEASE CHANGE IT IN PRODUCTION).
+Run `python setup.py` to set up your instance, including creating the MariaDB databse and setting an admin password.
 
-Finally you can run `python App.py` and go from there.
+Finally you can run `python App.py` and go navigate to `127.0.0.1:8080/login` to get to the admin control panel.
 
 To expose it to the world, I recommend using an [nginx proxy](#).
 ## Configuration
 
-```json
+```
 {
     "comments": [
         "This is the config file for Platypus.",
@@ -61,7 +60,11 @@ To expose it to the world, I recommend using an [nginx proxy](#).
     				   // More accurate = higher, faster = lower
     "stats_path": "/status/platypus.php", // Location of status script
     "admin_username": "admin", // Admin username
-    "admin_password": "$2b$12$q1oiev5KEoOPvWJe7b5xuOm3PU61Ks9c2Y9e4ZFzS1YzJtsFLBBBK" // Admin password (salted & hashed) 
+    "admin_password": "$2b$12$q1oiev5KEoOPvWJe7b5xuOm3PU61Ks9c2Y9e4ZFzS1YzJtsFLBBBK", // Admin password (salted & hashed) 
+    "sql_user":"root", // MariaDB Username
+    "sql_host":"localhost", // DB Host
+    "sql_pass": "", // DB Password
+    "sql_db": "server" // DB Table
 }
 ```
 
@@ -75,22 +78,28 @@ using - Platypus does not care which version you use, and will
 still check if your server is offline if it results in a 404.
 
 ### Using Python
-
-Just copy the `Scripts/python/` folder to your servers. Next, you'll need to
-[set up a proxy with nginx](#) that will point towards `127.0.0.1:9000` using
-the path `<server URL>/platy/` (e.g `first.gmem.pw/platy/`). Finally,
-you can go back to the `Scripts/python/` folder and run `Run.sh` (you will
-require `screen`). It will handle everything. If you choose to visit the URL
-for the stats, you will find some json displaying various info about your
-server. This data is fetched on request.
+ - Install Python 3
+ - `pip install psutil`
+ - Move `Stats.py` to your server
+ - `chmod +x Stats.py`
+ - `screen ./Stats.py`
+(Screen is recommended)
+ - [Set up a proxy with nginx](https://www.nginx.com/resources/admin-guide/reverse-proxy/)
 
 ### Using PHP
+ - Move `index.php` to whever your web files are
+  - Feel free to rename `index.php` and put it wherever
+ - Visit the path that corresponds with where you put it
 
-Copy over the contents of `Scripts/php/` to your server directory under a
-directory named `platy/` wherever your webserver files are served from.
-You will require the latest version of PHP and a webserver installed
-(e.g Apache or nginx).
+### Returned data
+ - Used CPU
+ - Used memory
+ - Used disk space
 
+ `{"cpu": 6, "memory": 38, "disk": 8}`
+
+Some stats may vary slightly between script, this is simply due to the methods used to get
+the statistics.
 
 ## Paths
 
@@ -98,7 +107,8 @@ You will require the latest version of PHP and a webserver installed
 | --- | ---- | ---- |
 | `/` | Main homepage, loads all servers | `GET` |
 | `/raw` | Returns raw cache data | `GET` |
-| `/fetch/<panel>` | Get server usage stats live (CORS middleman) |
+| `/fetch/<panel>` | Get server usage stats live (CORS middleman) | `GET` |
 | `/login` | Login page or POST route | `GET`, `POST` |
 | `/admin` | Admin management page | `GET` (requires admin cookie) |
-| `/ac/<panel>` | Admin control route, takes many methods for various actions. | `DELETE`, `PUT`, `POST`, `GET` (requires admin cookie) |
+| `/ac/remove/<panel>` | Admin route for removing server. | `DELETE` (requires admin cookie) |
+| `/ac/new` | Create new server in database | `POST` |

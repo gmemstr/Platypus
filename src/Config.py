@@ -5,19 +5,19 @@
 import json
 
 class Config:
-    def Get(self, property):
-        self.config = json.load(open("config.json"))
+    def __init__(self):
+        with open('config.json') as config:    
+            self.config = json.load(config)
 
+    def Get(self, property):
         if(property == "*"):
             return self.config
         else:
             return self.config[property]
     def Set(self, property, newvalue):
-        self.config = json.load(open("config.json"))
-
         self.config[property] = newvalue
 
-        json.dump(open("config.json"), config, indent=4)
+        with open('config.json', 'w') as config:
+            json.dump(self.config, config, indent=4)
 
-        return true
-                
+        return True

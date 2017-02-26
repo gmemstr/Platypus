@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # Platypus panel script
 # Runs a minimal HTTP/S server that
 # returns JSON reflecting resource usage
@@ -14,9 +16,9 @@ import json
 
 def Stats():
     s = {}
-    s["cpu"] = psutil.cpu_percent()
-    s["memory"] = psutil.virtual_memory().percent
-    s["disk"] = psutil.disk_usage('/').percent
+    s["cpu"] = round(psutil.cpu_percent()) # Used CPU
+    s["memory"] = round(psutil.virtual_memory().percent) # Used memory
+    s["disk"] = round(psutil.disk_usage('/').percent) # Used disk
     return json.dumps(s)
 
 # Actual minimal HTTP server. Source:

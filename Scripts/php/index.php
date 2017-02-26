@@ -30,7 +30,7 @@ $dif['idle'] = $info2[3] - $info1[3];
 $total = array_sum($dif);
 $cpu = array();
 foreach($dif as $x=>$y) $cpu[$x] = round($y / $total * 100, 1);
-$array['cpu'] = $cpu['user'];
+$array['cpu'] = round($cpu['user']);
 
 $memmath = $memcache + $memfree;
 $memmath2 = $memmath / $memtotal * 100;
@@ -41,14 +41,14 @@ $array['memory'] = $memory;
 $hddtotal = disk_total_space("/");
 $hddfree = disk_free_space("/");
 $hddmath = $hddfree / $hddtotal * 100;
-$hdd = round($hddmath);
+$hdd = round(100 - $hddmath);
 
 $array['hdd'] = $hdd;
 
 // RETURNS
 // USED CPU
 // USED MEMORY
-// FREE HDD
+// USED HDD
 // IN PERCENTAGES
 // YA NUMPTY
 
