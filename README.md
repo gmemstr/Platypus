@@ -11,6 +11,7 @@ Even More Buzzwords For SEO Reasons
 Monitors and reports statistics of your server infrastucture, including usage statistics, uptime, downtime, etc.
 
 ### Current Features
+ - Setup script
  - Scan servers from a SQL database
  - Log scan results to database
  - Auto-update uptime or downtime
@@ -28,16 +29,14 @@ Monitors and reports statistics of your server infrastucture, including usage st
  - Python 3.x (2.x not officially supported)
  - pip
   - `pip install -r requirements.txt`
- - MySQL / MariaDB
+ - MariaDB
 
 ## Running
-You'll want to first set up your SQL database - a skeleton file you can import is located in the `Scripts` folder. Else see the SQL database specifications.
-
 Run `python setup.py` to set up your instance, including creating the MariaDB databse and setting an admin password.
 
 Finally you can run `python App.py` and go navigate to `127.0.0.1:8080/login` to get to the admin control panel.
 
-To expose it to the world, I recommend using an [nginx proxy](#).
+To expose it to the world, I recommend using an [nginx proxy](https://www.nginx.com/resources/admin-guide/reverse-proxy/).
 ## Configuration
 
 ```
