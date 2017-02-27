@@ -23,9 +23,9 @@ class Bot:
         username = "Platypus"
         icon = ":desktop_computer:"
         message = "Some panels may be offline!"
-        for s in sorted(data):
-            if data[4] != 1:
-                message = message + " Panel " + str(s)
+        for s in data:
+            if s[4] != 1:
+                message = message + " " + s[1] + " (" + s[2] + ")"
                 off = off + 1
 
             if off > 1: post = True
