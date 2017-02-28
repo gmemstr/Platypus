@@ -41,7 +41,8 @@ function setRow(text,panel,row){
     //console.log(text);
     //console.log(panel)
     res = JSON.parse(text);
-    if (res[panel]['online'] == 0 || res[panel]['online'] == null) {
+    console.log(res[panel]['online']);
+    if (res[panel]['online'] == false || res[panel]['online'] == null) {
         row.cells[0].innerHTML = res[panel]['name'] + "<strong>OFFLINE</strong>";
         row.cells[2].innerHTML = "0%";
         row.cells[3].innerHTML = "0%";

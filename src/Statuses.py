@@ -20,10 +20,10 @@ class Scanning:
       return self.Scan(s[0])
 
   def Scan(self, panel):
-    print(panel)
+    # print(panel)
     id = panel[0]
     res = {}
-    offline = ""
+    online = False
     # Iterate through the list of servers
     try:
       # TODO: Except if stats are not found but page loads (non-404)
@@ -31,7 +31,7 @@ class Scanning:
         request = requests.get("http://" + panel[2] + config.Get("stats_path"),
                                timeout=config.Get("scan_timeout"))
         print(panel[0], "online")
-        offline = "online"
+        online = True
         if request.status_code == 404:
           cpu = 0  # CPU
           memory = 0  # RAM
@@ -46,12 +46,12 @@ class Scanning:
         cpu=0
         disk=0
         memory=0
-        status = "offline"
+        online = False
     
-    handler.SetStatus(id,offline,str(cpu),str(memory),str(disk))
+    handler.SetStatus(id,online,str(cpu),str(memory),str(disk))
 
     res[panel[0]] = {"name": panel[1],
-                 "online": panel[4],
+                 "online": online,
                  "location": panel[3],
                  "cpu": cpu,
                  "memory":memory,

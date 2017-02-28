@@ -28,26 +28,26 @@ class Handler:
             self.c.execute("SELECT * FROM "+self.sqltable+" WHERE id="+str(server))
             return self.c.fetchall()
 
-    def SetStatus(self,panel,status,cpu,memory,disk):
+    def SetStatus(self,panel,online,cpu,memory,disk):
         self.c.execute("SELECT * FROM "+self.sqltable+" WHERE id="+str(panel))
         udtime = self.c.fetchone()[5]
         if udtime is None:
             udtime = 0
 
-        if udtime >= 0 and status == "offline":
+        if udtime >= 0 and online == False:
             # Server just went offline
             self.c.execute("UPDATE "+self.sqltable+" SET online=false, udtime=0 WHERE id="+str(panel))
-        elif udtime >= 0 and status == "online":
+        elif udtime >= 0 and online == True:
             # Increment uptime (online)
             self.c.execute("UPDATE "+self.sqltable+" SET udtime="+
                 str(udtime + self.config.Get("scan_interval"))+", cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))
-        elif udtime <= 0 and status == "offline":
+        elif udtime <= 0 and online == False:
             # Deincrement uptime (offline)
             self.c.execute("UPDATE "+self.sqltable+" SET udtime="+
                 str(udtime - self.config.Get("scan_interval"))+
                 " WHERE id="+str(panel))
-        elif udtime <= 0 and status == "online":
+        elif udtime <= 0 and online == True:
             # Set reset uptime and set as online
             self.c.execute("UPDATE "+self.sqltable+" SET online=true, udtime=0, cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))
