@@ -22,8 +22,8 @@ if __name__ == "__main__":
         # The order in which the processes are started
         # is important, since the flask process effectively
         # blocks the rest of the code from running (wtfkwbtihiw)
-        sbp = Process(target=sb.Loop()).start()
         scnp = Process(target=scn.Loop()).start()
+        sbp = Process(target=sb.Loop()).start()
         wsp = Process(target=ws.Run()).start()
 
     elif config.Get("enable_webserver") is True:
