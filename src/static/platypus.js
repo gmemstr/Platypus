@@ -41,17 +41,17 @@ function setRow(text,panel,row){
     //console.log(text);
     //console.log(panel)
     res = JSON.parse(text);
-    console.log(res[panel]['online']);
-    if (res[panel]['online'] == false || res[panel]['online'] == null) {
-        row.cells[0].innerHTML = res[panel]['name'] + "<strong>OFFLINE</strong>";
+    console.log(res['online']);
+    if (res['online'] == false || res['online'] == null) {
+        row.cells[0].innerHTML = res['name'] + "<strong>OFFLINE</strong>";
         row.cells[2].innerHTML = "0%";
         row.cells[3].innerHTML = "0%";
         row.cells[4].innerHTML = "0%";
     } else {
-        row.cells[0].innerHTML = res[panel]['name'];
-        row.cells[2].innerHTML = res[panel]['cpu'] + "%";
-        row.cells[3].innerHTML = res[panel]['memory'] + "%";
-        row.cells[4].innerHTML = res[panel]['disk'] + "%";
+        row.cells[0].innerHTML = res['name'];
+        row.cells[2].innerHTML = res['cpu'] + "%";
+        row.cells[3].innerHTML = res['memory'] + "%";
+        row.cells[4].innerHTML = res['disk'] + "%";
     }
 }
 
