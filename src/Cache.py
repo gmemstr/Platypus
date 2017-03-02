@@ -29,6 +29,7 @@ class Handler:
             return self.c.fetchall()
 
     def SetStatus(self,panel,online,cpu,memory,disk):
+        self.db.ping()
         self.c.execute("SELECT * FROM "+self.sqltable+" WHERE id="+str(panel))
         udtime = self.c.fetchone()[5]
         if udtime is None:
@@ -39,12 +40,12 @@ class Handler:
             self.c.execute("UPDATE "+self.sqltable+" SET online=false, udtime=0 WHERE id="+str(panel))
         elif udtime >= 0 and online == True:
             # Increment uptime (online)
-            self.c.execute("UPDATE "+self.sqltable+" SET udtime="+
+            self.c.execute("UPDATE "+self.sqltable+" SET online=true, udtime="+
                 str(udtime + self.config.Get("scan_interval"))+", cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))
         elif udtime <= 0 and online == False:
             # Deincrement uptime (offline)
-            self.c.execute("UPDATE "+self.sqltable+" SET udtime="+
+            self.c.execute("UPDATE "+self.sqltable+" SET online=false, udtime="+
                 str(udtime - self.config.Get("scan_interval"))+
                 " WHERE id="+str(panel))
         elif udtime <= 0 and online == True:

@@ -13,8 +13,9 @@ class Scanning:
     if panel == "all":
       s_list = handler.Get()
       for s in s_list:
-        self.Scan(s)
-      return "fs"
+        res = self.Scan(s)
+        handler.SetStatus(s[0],res['online'],res['cpu'],res['memory'],res['disk'])
+      return "done"
     else:
       s = handler.Get(panel)
       return self.Scan(s[0])
@@ -48,14 +49,12 @@ class Scanning:
         memory=0
         online = False
     
-    handler.SetStatus(id,online,str(cpu),str(memory),str(disk))
-
-    res[panel[0]] = {"name": panel[1],
+    res = {"name": panel[1],
                  "online": online,
                  "location": panel[3],
-                 "cpu": cpu,
-                 "memory":memory,
-                 "disk":disk}
+                 "cpu": str(cpu),
+                 "memory":str(memory),
+                 "disk":str(disk)}
 
     return res
 
