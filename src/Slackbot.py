@@ -24,7 +24,7 @@ class Bot:
         icon = ":desktop_computer:"
         message = "Some panels may be offline!"
         for s in data:
-            if s[4] != 1:
+            if s[4] == 0:
                 message = message + " " + s[1] + " (" + s[2] + ")"
                 off = off + 1
 
@@ -35,7 +35,7 @@ class Bot:
 
 
     def Data(self):
-        data = handler.Get(offline="only")
+        data = handler.Get()
         self.BuildMessage(data)
 
     def Loop(self):
