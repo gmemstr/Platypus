@@ -30,25 +30,33 @@ class Handler:
             return self.c.fetchall()
 
     def SetStatus(self,panel,online,cpu,memory,disk):
+        print("Setting...")
         self.db.ping()
         self.c.execute("SELECT * FROM "+self.sqltable+" WHERE id="+str(panel))
-        wasup = self.c.fetchone()[3]
+        wasup = self.c.fetchone()[4]
         udtime = 0
 
-        if  online == False and wasup == True:
+        if online == False and wasup == 1:
+            print("Set offline")
             # Server just went offline
             self.c.execute("UPDATE "+self.sqltable+" SET online=false, udtime=0 WHERE id="+str(panel))
-        elif online == True and wasup == True:
+
+        if online == True and wasup == 1:
             # Refresh stats (online)
+            print("Still online")
             self.c.execute("UPDATE "+self.sqltable+" SET online=true, udtime="+
                 str(udtime + self.config.Get("scan_interval"))+", cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))
-        elif online == False and wasup == False:
+        
+        if online == False and wasup == 0:
+            print("Still offine")
             # Do nothing (offline)
             self.c.execute("UPDATE "+self.sqltable+" SET online=false, udtime="+
                 str(udtime - self.config.Get("scan_interval"))+
                 " WHERE id="+str(panel))
-        elif online == True and wasup == False:
+        
+        if online == True and wasup == 0:
+            print("Set online")
             # Panel just went onlie
             self.c.execute("UPDATE "+self.sqltable+" SET online=true, udtime=0, cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))

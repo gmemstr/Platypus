@@ -27,7 +27,6 @@ class Scanning:
     online = False
     # Iterate through the list of servers
     try:
-      # TODO: Except if stats are not found but page loads (non-404)
         # Attempts to fetch platy stats from panel.
         request = requests.get("http://" + panel[2] + config.Get("stats_path"),
                                timeout=config.Get("scan_timeout"))
