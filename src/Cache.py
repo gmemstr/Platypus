@@ -40,27 +40,31 @@ class Handler:
             print("Set offline")
             # Server just went offline
             self.c.execute("UPDATE "+self.sqltable+" SET online=false, udtime=0 WHERE id="+str(panel))
-
+            self.db.commit()
+            
         if online == True and wasup == 1:
             # Refresh stats (online)
             print("Still online")
             self.c.execute("UPDATE "+self.sqltable+" SET online=true, udtime="+
                 str(udtime + self.config.Get("scan_interval"))+", cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))
-        
+            self.db.commit()
+
         if online == False and wasup == 0:
             print("Still offine")
             # Do nothing (offline)
             self.c.execute("UPDATE "+self.sqltable+" SET online=false, udtime="+
                 str(udtime - self.config.Get("scan_interval"))+
                 " WHERE id="+str(panel))
+            self.db.commit()
         
+
         if online == True and wasup == 0:
             print("Set online")
             # Panel just went onlie
             self.c.execute("UPDATE "+self.sqltable+" SET online=true, udtime=0, cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))
-        self.db.commit()
+            self.db.commit()
 
     def RemoveServer(self, panel):
         self.c.execute("DELETE FROM "+self.sqltable+" WHERE id="+str(panel))
