@@ -18,6 +18,7 @@ class Handler:
         self.c = self.db.cursor()
 
     def Get(self,server="all",offline="all"):
+        self.db.ping()
         if server == "all":
             self.c.execute("SELECT * FROM "+self.sqltable)
             return self.c.fetchall()
