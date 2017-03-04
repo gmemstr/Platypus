@@ -31,25 +31,24 @@ class Handler:
     def SetStatus(self,panel,online,cpu,memory,disk):
         self.db.ping()
         self.c.execute("SELECT * FROM "+self.sqltable+" WHERE id="+str(panel))
-        udtime = self.c.fetchone()[5]
-        if udtime is None:
-            udtime = 0
+        wasup = self.c.fetchone()[3]
+        udtime = 0
 
-        if udtime >= 0 and online == False:
+        if  online == False and wasup == True:
             # Server just went offline
             self.c.execute("UPDATE "+self.sqltable+" SET online=false, udtime=0 WHERE id="+str(panel))
-        elif udtime >= 0 and online == True:
-            # Increment uptime (online)
+        elif online == True and wasup == True:
+            # Refresh stats (online)
             self.c.execute("UPDATE "+self.sqltable+" SET online=true, udtime="+
                 str(udtime + self.config.Get("scan_interval"))+", cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))
-        elif udtime <= 0 and online == False:
-            # Deincrement uptime (offline)
+        elif online == False and wasup == False:
+            # Do nothing (offline)
             self.c.execute("UPDATE "+self.sqltable+" SET online=false, udtime="+
                 str(udtime - self.config.Get("scan_interval"))+
                 " WHERE id="+str(panel))
-        elif udtime <= 0 and online == True:
-            # Set reset uptime and set as online
+        elif online == True and wasup == False:
+            # Panel just went onlie
             self.c.execute("UPDATE "+self.sqltable+" SET online=true, udtime=0, cpu="+ 
                 cpu + ", memory="+memory+",disk="+disk+" WHERE id="+str(panel))
         self.db.commit()
