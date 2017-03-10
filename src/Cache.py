@@ -17,8 +17,14 @@ class Handler:
         self.db = MySQLdb.connect(user=sqluser,passwd=sqlpass,db="platypus")
         self.c = self.db.cursor()
 
+    def CheckConnection(self):
+        try:
+            self.db.ping()
+        except:
+            self.db =  MySQLdb.connect(user=sqluser,passwd=sqlpass,db="platypus")
+
     def Get(self,server="all",offline="all"):
-        self.db.ping()
+        self.CheckConnection()
         if server == "all":
             self.c.execute("SELECT * FROM "+self.sqltable)
             return self.c.fetchall()
@@ -30,8 +36,8 @@ class Handler:
             return self.c.fetchall()
 
     def SetStatus(self,panel,online,cpu,memory,disk):
+        self.CheckConnection()
         print("Setting...")
-        self.db.ping()
         self.c.execute("SELECT * FROM "+self.sqltable+" WHERE id="+str(panel))
         wasup = self.c.fetchone()[4]
         udtime = 0
@@ -67,16 +73,22 @@ class Handler:
             self.db.commit()
 
     def RemoveServer(self, panel):
+        self.CheckConnection()
+
         self.c.execute("DELETE FROM "+self.sqltable+" WHERE id="+str(panel))
         self.db.commit()
         return True
     def CreateServer(self, panel, form):
+        self.CheckConnection()
+        
         # Insert new server into database
         self.c.execute("INSERT INTO "+self.sqltable+" (id,name,hostname,location) VALUES (%s,%s,%s,%s)",
             (int(form['id']),form['name'],form['hostname'],form['location']))
         self.db.commit()
         return True
     def ModServer(self, panel, form):
+        self.CheckConnection()
+        
         # Edit server
         self.c.execute("UPDATE "+self.sqltable+" SET name=%s,hostname=%s WHERE id=%s",
             (form['name'], form['hostname'], panel))
