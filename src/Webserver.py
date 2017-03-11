@@ -4,15 +4,15 @@ import requests
 
 # Custom imports
 from src.Login import LoginManager, User
-from src.Cache import Handler
+from src.SQL import Sql
 from src.Config import Config
-from src.Statuses import Scanning
+from src.Scan import Scan
 
 lm = LoginManager()
 user = User()
 config = Config()
-handler = Handler()
-scan = Scanning()
+handler = Sql()
+scan = Scan()
 
 app = Flask(__name__)
 
