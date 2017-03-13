@@ -16,7 +16,7 @@ class Bot:
             username=username, icon_emoji=icon)
 
 
-    def ServerReport(self,data):
+    def ServerReport(self):
         servers = sql.Get()
         post = True
         off = 0
