@@ -1,31 +1,37 @@
-import asyncio
 import requests
+import threading
 # from src.Cache import Handler
 from src.SQL import Sql
+import time
+from src.Config import Config
 
+config = Config()
 sql = Sql()
 
 class Scan:
     def __init__(self):
         self.panels = sql.Get()
 
-    async def Fetch(self,panel=None):
+    def Fetch(self,panel=None):
+        print("Fetching panels")
         if panel == None:
             for p in self.panels:
-                result = await self.Check(p)
+                result = self.Check(p)
+                print(result)
                 sql.Set(p[0],
-                        result['online'],
-                        str(result['cpu']),
-                        str(result['memory']),
-                        str(result['disk']))
-    
-    async def Check(self, panel):
+                    result['online'],
+                    str(result['cpu']),
+                    str(result['memory']),
+                    str(result['disk']))
+
+    def Check(self, panel):
         id = panel[0]
 
         try:
-            request = requests.get("http://" + panel[2] + "/platy/", timeout=2)
+            request = requests.get("http://" + panel[2] + config.Get("stats_path"),
+                                   timeout = config.Get("scan_timeout"))
 
-            print(panel[0], "online")
+            print(panel[0], "online", request.status_code)
             if request.status_code == 404:
                 return {"name": panel[1],
                         "online": True,
@@ -38,7 +44,7 @@ class Scan:
                         "online": True,
                         "cpu": data["cpu"],
                         "memory": data["memory"],
-                        "disk": data["disk"]}
+                        "disk": data["hdd"]}
 
         except Exception as e:
             print(panel[0], "offline")
@@ -49,7 +55,6 @@ class Scan:
                         "memory": 0,
                         "disk": 0}
 
-s = Scan()
-loop = asyncio.get_event_loop()
-loop.create_task(s.Fetch())
-loop.run_forever()
+    def Loop(self):
+        self.Fetch()
+        threading.Timer(config.Get("scan_interval"), self.Loop).start()

@@ -37,3 +37,8 @@ class Bot:
 
         username = "Platypus (" + str(off) + ")"
         if post is True: self.Post(message, channel, username, icon)
+
+
+    def Loop(self):
+        self.Fetch()
+        threading.Timer(config.Get("slack_interval"), self.Loop).start()

@@ -24,10 +24,10 @@ class Sql:
         self.CheckConnection()
         if filter == None:
             self.c.execute("SELECT * FROM " + self.sqltable)
-            yield self.c.fetchall()
+            return self.c.fetchall()
         if filter == "one":
             self.c.execute("SELECT * FROM " + self.sqltable + " WHERE id=%s", (arg))
-            yield self.c.fetchall()
+            return self.c.fetchall()
         else:
             raise ValueError('Invalid filter for SQL query')
 
@@ -35,6 +35,7 @@ class Sql:
         self.CheckConnection()
         self.c.execute("UPDATE " + self.sqltable + " SET online=%s,cpu=%s,memory=%s,disk=%s WHERE id=%s",
                         (online, cpu, memory, disk, panel))
+        self.db.commit()
 
     def RemoveServer(self, panel):
         self.CheckConnection()
