@@ -1,18 +1,19 @@
 # Python modules
 from flask import Flask, render_template, abort, g, request, redirect, url_for, jsonify
 import requests
+from multiprocessing.pool import ThreadPool
 
 # Custom imports
 from src.Login import LoginManager, User
-from src.Cache import Handler
+from src.SQL import Sql
 from src.Config import Config
-from src.Statuses import Scanning
+from src.Scan import Scan
 
 lm = LoginManager()
 user = User()
 config = Config()
-handler = Handler()
-scan = Scanning()
+handler = Sql()
+scan = Scan()
 
 app = Flask(__name__)
 
@@ -28,9 +29,11 @@ def ReturnRawStats():
 
 @app.route('/fetch/<panel>')
 def MiddlemanStat(panel):
+    pool = ThreadPool(processes=1)
+
     # Acts as a middleman for CORS reasons
-    res = scan.Fetch(panel)
-    return jsonify(res)
+    async_result = pool.apply_async(scan.Fetch, (panel,))
+    return jsonify(async_result.get())
 
 @app.route("/login", methods=["GET", "POST"])
 def LoginRoute():
