@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     elif config.Get("enable_webserver") is True:
         print("Webserver starting up")
-        scnp = Thread(target=scn.Loop()).start()
+        #scnp = Thread(target=scn.Loop()).start()
         wsp = Thread(target=ws.Run()).start()
 
     elif config.Get("enable_slackbot") is True:

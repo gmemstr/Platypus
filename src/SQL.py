@@ -20,13 +20,13 @@ class Sql:
         except:
             self.db =  MySQLdb.connect(user=self.sqluser,passwd=self.sqlpass,db="platypus")
 
-    def Get(self,filter=None,arg=None):
+    def Get(self,filter=None,panel=None):
         self.CheckConnection()
         if filter == None:
             self.c.execute("SELECT * FROM " + self.sqltable)
             return self.c.fetchall()
         if filter == "one":
-            self.c.execute("SELECT * FROM " + self.sqltable + " WHERE id=%s", (arg))
+            self.c.execute("SELECT * FROM " + self.sqltable + " WHERE id="+panel)
             return self.c.fetchall()
         else:
             raise ValueError('Invalid filter for SQL query')

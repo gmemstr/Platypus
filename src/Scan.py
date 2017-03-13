@@ -24,6 +24,11 @@ class Scan:
                     str(result['memory']),
                     str(result['disk']))
 
+        else:
+            panel = sql.Get("one", panel)[0]
+            print(panel)
+            return self.Check(panel)
+
     def Check(self, panel):
         id = panel[0]
 
