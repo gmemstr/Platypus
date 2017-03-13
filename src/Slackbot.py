@@ -40,5 +40,5 @@ class Bot:
 
 
     def Loop(self):
-        self.Fetch()
+        self.ServerReport()
         threading.Timer(config.Get("slack_interval"), self.Loop).start()
