@@ -1,6 +1,6 @@
 import asyncio
 import MySQLdb
-from src.Config import Config
+from Config import Config
 
 class Sql:
     def __init__(self):
