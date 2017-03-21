@@ -3,30 +3,32 @@ window.onload = checkNight;
 // panels stats indivudually
 setInterval(RequestStat, 1000);
 var table = document.getElementById("table");
-var i=0;
+var i = 0;
+var ws = new WebSocket("ws://localhost:8888/fetch");
 
 function RequestStat() {
     if (document.getElementById("rts").checked == true) {
-            if (i < table.rows.length){ i++; }
-            else { i = 0; }
-            //console.log(i);
-            var row = table.rows[i];
-            var panel = row.id;
-            //console.log(row);
-            Request(panel, setRow, "GET", row);
+        if (i < table.rows.length) {
+            i++;
+        } else {
+            i = 0;
         }
+        //console.log(i);
+        var row = table.rows[i];
+        var panel = row.id;
+        //console.log(row);
+        console.log("Attempting to get " + panel)
+        Request(panel, setRow, row);
+    }
 }
 
-function Request(panel, callback, method = "GET", row) {
-    url = "/fetch/"+panel;
-    var request = new XMLHttpRequest();
-    request.open(method, url);
-    request.send();
+function Request(panel, callback, row) {
+    ws.send(panel.toString());
 
-    request.onreadystatechange = function() {
-        if (request.readyState == 4 && request.status == 200)
-            callback(request.responseText,panel,row);
-    }
+    ws.onmessage = function(evt) {
+        console.log(evt.data)
+        callback(evt.data, panel, row);
+    };
 }
 
 function toggleRts() {
@@ -37,13 +39,13 @@ function toggleRts() {
     }
 }
 
-function setRow(text,panel,row){
-    //console.log(text);
+function setRow(text, panel, row) {
+    //console.log(row);
     //console.log(panel)
     res = JSON.parse(text);
-    console.log(res['online']);
+    //console.log(res['online']);
     if (res['online'] == false || res['online'] == null) {
-        row.cells[0].innerHTML = res['name'] + "<strong>OFFLINE</strong>";
+        row.cells[0].innerHTML = res['name'] + " <strong>OFFLINE</strong>";
         row.cells[2].innerHTML = "0%";
         row.cells[3].innerHTML = "0%";
         row.cells[4].innerHTML = "0%";
@@ -79,6 +81,5 @@ function checkRts() {
     if (localStorage.rts == "true") {
         console.log("Stats enabled");
         document.getElementById("rts").checked = true;
-    } else {
-    }
+    } else {}
 }

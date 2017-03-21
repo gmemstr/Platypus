@@ -4,10 +4,10 @@ import requests
 from multiprocessing.pool import ThreadPool
 
 # Custom imports
-from src.Login import LoginManager, User
-from src.SQL import Sql
-from src.Config import Config
-from src.Scan import Scan
+from Login import LoginManager, User
+from SQL import Sql
+from Config import Config
+from Scan import Scan
 
 lm = LoginManager()
 user = User()
@@ -29,11 +29,8 @@ def ReturnRawStats():
 
 @app.route('/fetch/<panel>')
 def MiddlemanStat(panel):
-    pool = ThreadPool(processes=1)
-
-    # Acts as a middleman for CORS reasons
-    async_result = pool.apply_async(scan.Fetch, (panel,))
-    return jsonify(async_result.get())
+    res = scan.Fetch(panel)
+    return jsonify(res)
 
 @app.route("/login", methods=["GET", "POST"])
 def LoginRoute():
@@ -78,12 +75,3 @@ def NewPanel():
         return "Panel created"
     else:
         abort(403)
-
-
-
-class Webserver:
-    def Run(self):
-        app.run(port=config.Get("webserver_port"))
-        # Internally this webserver is proxied through nginx,
-        # so we don't really worry about setting what
-        # IP to run the webserver on.

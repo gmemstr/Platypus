@@ -2,7 +2,7 @@ import bcrypt
 from functools import wraps
 from flask import g, request, redirect, url_for
 
-from src.Config import Config
+from Config import Config
 
 config = Config()
 

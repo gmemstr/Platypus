@@ -1,9 +1,9 @@
 import requests
 import threading
 # from src.Cache import Handler
-from src.SQL import Sql
+from SQL import Sql
 import time
-from src.Config import Config
+from Config import Config
 
 config = Config()
 sql = Sql()
@@ -13,11 +13,11 @@ class Scan:
         self.panels = sql.Get()
 
     def Fetch(self,panel=None):
-        print("Fetching panels")
         if panel == None:
+            print("Fetching panels")
             for p in self.panels:
                 result = self.Check(p)
-                print(result)
+                #print(result)
                 sql.Set(p[0],
                     result['online'],
                     str(result['cpu']),
@@ -26,7 +26,7 @@ class Scan:
 
         else:
             panel = sql.Get("one", panel)[0]
-            print(panel)
+            #print(panel)
             return self.Check(panel)
 
     def Check(self, panel):
@@ -36,7 +36,7 @@ class Scan:
             request = requests.get("http://" + panel[2] + config.Get("stats_path"),
                                    timeout = config.Get("scan_timeout"))
 
-            print(panel[0], "online", request.status_code)
+            #print(panel[0], "online", request.status_code)
             if request.status_code == 404:
                 return {"name": panel[1],
                         "online": True,
@@ -52,8 +52,8 @@ class Scan:
                         "disk": data["hdd"]}
 
         except Exception as e:
-            print(panel[0], "offline")
-            print(e)
+            #print(panel[0], "offline")
+            #print(e)
             return {"name": panel[1],
                         "online": False,
                         "cpu": 0,
