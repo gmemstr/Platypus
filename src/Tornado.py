@@ -29,6 +29,7 @@ class FetchWebsocket(tornado.websocket.WebSocketHandler):
         print(self.request.remote_ip + " requested panel " + message)
         res = scan.Fetch(message)
         self.write_message(res)
+        print(self.request.remote_ip + " was sent a reply")
 
     def on_close(self):
         print("Fetch websocket closed")

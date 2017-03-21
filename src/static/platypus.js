@@ -26,8 +26,8 @@ function Request(panel, callback, row) {
     ws.send(panel.toString());
 
     ws.onmessage = function(evt) {
-        console.log(evt.data)
-        callback(evt.data, panel, row);
+        //console.log(evt.data, panel)
+        callback(evt.data);
     };
 }
 
@@ -39,10 +39,14 @@ function toggleRts() {
     }
 }
 
-function setRow(text, panel, row) {
+function setRow(text) {
+    var res = JSON.parse(text);
+    var panel = res['name'].replace('Panel ', '');
+    console.log("---------- \n" + panel)
+    var row = document.getElementById(panel);
+    console.log(row + "\n----------")
     //console.log(row);
     //console.log(panel)
-    res = JSON.parse(text);
     //console.log(res['online']);
     if (res['online'] == false || res['online'] == null) {
         row.cells[0].innerHTML = res['name'] + " <strong>OFFLINE</strong>";
