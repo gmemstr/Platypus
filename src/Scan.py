@@ -38,14 +38,16 @@ class Scan:
 
             #print(panel[0], "online", request.status_code)
             if request.status_code == 404:
-                return {"name": panel[1],
+                return {"id": id,
+                        "name": panel[1],
                         "online": True,
                         "cpu": 0,
                         "memory": 0,
                         "disk": 0}
             else:
                 data = request.json()
-                return {"name": panel[1],
+                return {"id": id,
+                        "name": panel[1],
                         "online": True,
                         "cpu": data["cpu"],
                         "memory": data["memory"],
@@ -54,7 +56,8 @@ class Scan:
         except Exception as e:
             #print(panel[0], "offline")
             #print(e)
-            return {"name": panel[1],
+            return {    "id": id,
+                        "name": panel[1],
                         "online": False,
                         "cpu": 0,
                         "memory": 0,

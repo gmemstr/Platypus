@@ -41,7 +41,7 @@ function toggleRts() {
 
 function setRow(text) {
     var res = JSON.parse(text);
-    var panel = res['name'].replace('Panel ', '');
+    var panel = res['id']
     console.log("---------- \n" + panel)
     var row = document.getElementById(panel);
     console.log(row + "\n----------")
