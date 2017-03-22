@@ -4,7 +4,7 @@ window.onload = checkNight;
 setInterval(RequestStat, 1000);
 var table = document.getElementById("table");
 var i = 0;
-var ws = new WebSocket("ws://localhost:8888/fetch");
+var ws = new WebSocket("ws://"+document.location.host+"/fetch");
 
 function RequestStat() {
     if (document.getElementById("rts").checked == true) {
