@@ -10,6 +10,10 @@ from SQL import Sql
 sql = Sql()
 scan = Scan()
 
+class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("i")
+
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("templates/index.html", stats = sql.Get())
@@ -29,37 +33,42 @@ class FetchWebsocket(tornado.websocket.WebSocketHandler):
         print(self.request.remote_ip + " requested panel " + message)
         res = scan.Fetch(message)
         self.write_message(res)
-        print(self.request.remote_ip + " was sent a reply")
+        print(self.request.remote_ip + " was sent " + message)
 
     def on_close(self):
         print("Fetch websocket closed - client " + self.request.remote_ip)
 
-class LoginManager(tornado.web.ResourceHandler):
+class LoginManager(tornado.web.RequestHandler):
     def get(self):
         self.render("templates/login.html")
 
     def post(self):
         self.set_secure_cookie("i", "TODO_RANDOM_KEY")
+        self.redirect("/admin")
 
-class AdminInterface(tornado.web.ResourceHandler)
+class AdminInterface(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.write("Hello")
+        self.render("templates/admin.html", servers = sql.Get())
 
-    def delete(self)
+    def delete(self):
+        pass
+
 def make_app():
 
     settings = {
         "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
         "login_url": "/login",
-        "xsrf_cookies": True
+        "xsrf_cookies": True,
+        "debug": True
     }
 
     return tornado.web.Application([
             (r"/", MainHandler),
             (r"/static/(.*)", ResourceHandler),
             (r"/fetch", FetchWebsocket),
-            (r"/login", LoginManager)
+            (r"/login", LoginManager),
+            (r"/admin", AdminInterface)
         ], **settings)
 
 def run_app():
