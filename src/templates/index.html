@@ -30,13 +30,13 @@
     <th>CPU Used</th>
     <th>Memory Used</th>
     <th>Disk Free</th>
-    {% for s in stats %}
+    {% for s in servers %}
     <tr id="{{ s[0] }}">
-        <td>{{ s[1] }} {% if s[4] == 0 %}<strong>OFFLINE</strong>{% end %}</td>
-        <td>{{ s[3] }}</td>
-        <td>{{ s[6] }}%</td>
-        <td>{{ s[7] }}%</td>
-        <td>{{ s[8] }}%</td>
+        <td>{{ s[1] }}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
     </tr>
     {% end %}
 </table>

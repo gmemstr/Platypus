@@ -6,7 +6,9 @@ import ServerHandler
 sql = ServerHandler.Sql()
 cache = ServerHandler.Cache()
 
+
 class AorMaster(tornado.websocket.WebSocketHandler):
+
     def open(self):
         print(self.request.remote_ip + " connected, asking for authentication...")
         self.write_message('{"success": true, "require_auth": true}')
@@ -16,12 +18,13 @@ class AorMaster(tornado.websocket.WebSocketHandler):
         raw = json.loads(message)
 
         if sql.Verify(raw["uuid"]):
-        	id = sql.UuidToId(raw["uuid"])
-        	cache.Update(id,raw["stats"])
+            id = sql.UuidToId(raw["uuid"])
+            cache.Update(id, raw["stats"])
+            SendFetchMessage(raw)
 
         else:
-        	self.write_message('{"success":false,"errcode":"invalid_uuid"}')
+            self.write_message('{"success":false,"errcode":"invalid_uuid"}')
 
-	def on_close(self):
-		id = sql.IpToId(self.ip)
-		cache.TriggerOffline(id)
+    def on_close(self):
+        id = sql.IpToId(self.ip)
+        cache.TriggerOffline(id)

@@ -1,12 +1,12 @@
 import requests
 import threading
 # from src.Cache import Handler
-from SQL import Sql
+import ServerHandler
 import time
 from Config import Config
 
 config = Config()
-sql = Sql()
+sql = ServerHandler.Sql()
 
 class Scan:
     def __init__(self):
