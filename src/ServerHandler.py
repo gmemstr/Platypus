@@ -51,12 +51,13 @@ class Sql:
     def Verify(self, uid):
         self.CheckConnection()
 
-        self.c.execute("SELECT * FROM %s WHERE uuid=%s", (self.sqltable, uuid))
+        self.c.execute("SELECT * FROM `" + self.sqltable +
+                       "` WHERE uuid='%s'" % uid)
         dbdata = self.c.fetchone()
 
         if dbdata is None:
             return False
-        if dbdata == uid:
+        if dbdata[10] == uid:
             return True
         else:
             return False
@@ -67,20 +68,21 @@ class Sql:
         self.CheckConnection()
         if id != "*":
             self.c.execute(
-                "SELECT id,name,hostname FROM %s WHERE id=%s", (self.sqltable, id))
+                "SELECT id,name,hostname FROM `" + self.sqltable + "` WHERE id=%s" % id)
             dbdata = self.c.fetchone()
         else:
             print(self.sqltable)
-            self.c.execute("SELECT id,name,hostname FROM %s" % self.sqltable)
+            self.c.execute("SELECT id,name,hostname FROM `" +
+                           self.sqltable + "`")
             dbdata = self.c.fetchall()
 
         return dbdata
 
-    def UuidToId(self, uuid):
+    def UuidToId(self, uid):
         self.CheckConnection()
 
-        self.c.execute("SELECT id FROM %s WHERE uuid=%s",
-                       (self.sqltable, uuid))
+        self.c.execute("SELECT id FROM `" + self.sqltable +
+                       "` WHERE uuid='%s'" % uid)
         dbdata = self.c.fetchone()
 
         return dbdata
@@ -88,7 +90,8 @@ class Sql:
     def IpToId(self, ip):
         self.CheckConnection()
 
-        self.c.execute("SELECT id FROM %s WHERE ip=%s", (self.sqltable, ip))
+        self.c.execute("SELECT id FROM `" +
+                       self.sqltable + "` WHERE ip='%s'" % ip)
         dbdata = self.c.fetchone()
 
         return dbdata
@@ -97,10 +100,11 @@ class Sql:
 class Cache:
 
     def __init__(self):
-        with open("src/cache/data.json") as data_file:
+        with open("src/cache/data.json", "r") as data_file:
             self.cache = json.load(data_file)
 
     def Update(self, id, stats):
+        id = str(id)
         self.cache[id] = stats
         self.__dump()
 
@@ -112,5 +116,5 @@ class Cache:
         return self.cache
 
     def __dump(self):
-        with open('src/cache/data.json', 'w') as data_file:
+        with open('src/cache/data.json', 'w+') as data_file:
             json.dump(self.cache, data_file, indent=4)

@@ -12,8 +12,6 @@ sql = ServerHandler.Sql()
 cache = ServerHandler.Cache()
 #scan = Scan()
 
-AliveSockets = set()
-
 
 class BaseHandler(tornado.web.RequestHandler):
 
@@ -35,29 +33,6 @@ class ResourceHandler(tornado.web.RequestHandler):
         res = open('src/static/' + resource).read()
         self.set_header("Content-Type", 'text/css; charset="utf-8"')
         self.write(res)
-
-
-class FetchWebsocket(tornado.websocket.WebSocketHandler):
-
-    def open(self):
-        AliveSockets.add(self)
-        print("Fetch websocket opened - client " + self.request.remote_ip)
-
-    def on_message(self, message):
-        print(self.request.remote_ip + " requested panel " + message)
-        #res = scan.Fetch(message)
-        res = "placeholder"
-        self.write_message(res)
-        print(self.request.remote_ip + " was sent " + message)
-
-    def on_close(self):
-        AliveSockets.remove(self)
-        print("Fetch websocket closed - client " + self.request.remote_ip)
-
-
-def SendFetchMessage(message):
-    for ws in AliveSockets:
-        ws.write_message(message)
 
 
 class LoginManager(tornado.web.RequestHandler):
@@ -95,7 +70,7 @@ def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
         (r"/static/(.*)", ResourceHandler),
-        (r"/fetch", FetchWebsocket),
+        (r"/fetch", Aor.FetchWebsocket),
         (r"/login", LoginManager),
         (r"/admin", AdminInterface),
         (r"/aor", Aor.AorMaster)

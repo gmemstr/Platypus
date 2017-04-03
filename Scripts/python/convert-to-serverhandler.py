@@ -23,6 +23,7 @@ db.commit()
 for server in dbdata:
     id = server[0]
     servers[id] = {
+        "online": True,
         "cpu": server[4],
         "memory": server[5],
         "disk": server[6]
@@ -30,7 +31,7 @@ for server in dbdata:
 
     uid = str(uuid.uuid4())
     print(id, server[2], "registred with uuid", uid)
-    c.execute("UPDATE server SET uuid=%s where id=%s", (uuid, id))
+    c.execute("UPDATE server SET uuid=%s where id=%s", (uid, id))
     db.commit()
 
 with open("src/cache/data.json", "w") as data_file:
