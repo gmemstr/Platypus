@@ -1,6 +1,6 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans';
-
 body {
+  transition: 0.25s;  
 	font-family: 'Open Sans', sans-serif;
 	background-color: #f9f9f9;
 }

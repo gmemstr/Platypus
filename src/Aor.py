@@ -15,14 +15,32 @@ class AorMaster(tornado.websocket.WebSocketHandler):
         self.write_message('{"success": true, "require_auth": true}')
         self.ip = self.request.remote_ip
 
+        id = sql.IpToId(self.ip)
+        j = json.dumps({
+            "id": id,
+            "online": True,
+            "disk": "refreshing",
+            "cpu": "refreshing",
+            "memory": "refreshing"
+        })
+        SendFetchMessage(j)
+
     def on_message(self, message):
         raw = json.loads(message)
 
         if sql.Verify(raw["uuid"]):
-            print(self.ip, "provided vaid uuid", raw["uuid"])
+            #   print(self.ip, "provided vaid uuid", raw["uuid"])
             id = sql.UuidToId(raw["uuid"])[0]
-            cache.Update(id, raw["stats"])
-            SendFetchMessage(raw)
+            #cache.Update(id, raw["stats"])
+            j = json.dumps({
+                "id": id,
+                "online": True,
+                "disk": raw["stats"]["disk"],
+                "cpu": raw["stats"]["cpu"],
+                "memory": raw["stats"]["memory"]
+            })
+            SendFetchMessage(j)
+            self.write_message('{"success": true, "require_auth": true}')
 
         else:
             print(self.ip, "provided INVALID uuid", raw["uuid"])
@@ -30,6 +48,14 @@ class AorMaster(tornado.websocket.WebSocketHandler):
 
     def on_close(self):
         id = sql.IpToId(self.request.remote_ip)[0]
+        j = json.dumps({
+            "id": id,
+            "online": False,
+            "disk": 0,
+            "cpu": 0,
+            "memory": 0
+        })
+        SendFetchMessage(j)
         cache.TriggerOffline(str(id))
 
 
