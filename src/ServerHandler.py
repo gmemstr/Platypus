@@ -112,6 +112,10 @@ class Cache:
         self.cache[id]["online"] = False
         self.__dump()
 
+    def TriggerOnline(self, id):
+        self.cache[id]["online"] = True
+        self.__dump()
+
     def Fetch(self):
         return self.cache
 

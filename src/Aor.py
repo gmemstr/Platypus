@@ -23,6 +23,7 @@ class AorMaster(tornado.websocket.WebSocketHandler):
             "cpu": "refreshing",
             "memory": "refreshing"
         })
+        cache.TriggerOnline(id)
         SendFetchMessage(j)
 
     def on_message(self, message):

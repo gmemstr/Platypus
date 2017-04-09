@@ -23,10 +23,7 @@ db.commit()
 for server in dbdata:
     id = server[0]
     servers[id] = {
-        "online": True,
-        "cpu": server[4],
-        "memory": server[5],
-        "disk": server[6]
+        "online": True
     }
 
     uid = str(uuid.uuid4())
