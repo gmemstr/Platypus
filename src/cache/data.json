@@ -384,7 +384,7 @@
         "disk": 4
     },
     "1": {
-        "online": false,
+        "online": true,
         "cpu": 60,
         "disk": 1,
         "memory": 36

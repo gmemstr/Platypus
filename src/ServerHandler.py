@@ -81,7 +81,7 @@ class Sql:
     def UuidToId(self, uid):
         self.CheckConnection()
 
-        self.c.execute("SELECT id FROM `" + self.sqltable +
+        self.c.execute("SELECT id,name,hostname FROM `" + self.sqltable +
                        "` WHERE uuid='%s'" % uid)
         dbdata = self.c.fetchone()
 
@@ -90,7 +90,7 @@ class Sql:
     def IpToId(self, ip):
         self.CheckConnection()
 
-        self.c.execute("SELECT id FROM `" +
+        self.c.execute("SELECT id,name,hostname FROM `" +
                        self.sqltable + "` WHERE ip='%s'" % ip)
         dbdata = self.c.fetchone()
 

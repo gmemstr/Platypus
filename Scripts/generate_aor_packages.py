@@ -8,7 +8,7 @@ import shutil
 conn = MySQLdb.connect(user="root", db="platypus")
 c = conn.cursor()
 
-c.execute("SELECT * FROM server where id=1")
+c.execute("SELECT * FROM server")
 data = c.fetchall()
 
 shutil.copy("aor.py", "aor_output/tmp/")
@@ -27,7 +27,7 @@ for server in data:
     with open("aor_config.json", "w") as data_file:
         json.dump(config, data_file, indent=4)
 
-    zf = zipfile.ZipFile("%s.zip" % ("../" + server[1]), "w")
+    zf = zipfile.ZipFile("%s.zip" % ("../" + server[2]), "w")
 
     for dirname, subdirs, files in os.walk("."):
         for filename in files:

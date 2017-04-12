@@ -74,10 +74,12 @@ it will use default values, and probably will not connect to your master.
 
 ### Deploying (Script)
 
-Deploying the script can be a bit tricky, and I hope to have this more
-streamlined in 3.1.
+If you would like to tinker with the script, take a peek at `Scripts/generate_aor_packages.py`
+and modify the values to match up to your database. It will automagically create
+zip packages containing the `aor.py` and `aor_config.json` files (already filled
+out too).
 
-You'll want to edit `Scripts/config.json` to match the values in your database,
+Alternatively, you'll want to edit `Scripts/config.json` to match the values in your database,
 namely changing the `"UUID":` field. You can leave the interval alone. 
 
 Then you can copy the config and `aor.py` script to your server and run the script, 

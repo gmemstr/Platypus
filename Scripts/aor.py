@@ -7,7 +7,7 @@ from time import sleep
 glblws = None
 
 with open("aor_config.json") as data_file:
-    config = json.loads(data_file)
+    config = json.load(data_file)
 
 
 def GetStats():

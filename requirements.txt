@@ -4,3 +4,4 @@ requests==2.13.0
 six==1.10.0
 tornado==4.4.2
 websocket-client==0.40.0
+slackclient
