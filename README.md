@@ -49,6 +49,7 @@ To expose it to the world, I recommend using an [nginx proxy](https://www.nginx.
 | admin_username | admin | Username for admin interface |
 | admin_password | | Password for admin interface |
 | sql_user | root | SQL database username |
+| sql_pass | | SQL database password |
 | sql_host | localhost | SQL database host |
 | sql_db | server | SQL data table |
 

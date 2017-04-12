@@ -51,9 +51,11 @@ class AdminInterface(BaseHandler):
     def get(self):
         self.render("templates/admin.html", servers=sql.Get())
 
+    @tornado.web.authenticated
     def delete(self):
         pass
 
+    @tornado.web.authenticated
     def post(self):
         pass
 

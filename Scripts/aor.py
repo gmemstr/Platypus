@@ -6,6 +6,9 @@ from time import sleep
 
 glblws = None
 
+with open("aor_config.json") as data_file:
+    config = json.loads(data_file)
+
 
 def GetStats():
     s = {}
@@ -21,7 +24,7 @@ def on_message(ws, message):
         print("DEBUG", "SENDING DATA")
         stats = GetStats()
         data = {
-            "uuid": "5c4e9e72-d3ad-4242-af13-64c4446de457",
+            "uuid": config["uuid"],
             "stats": {
                 "cpu": stats["cpu"],
                 "disk": stats["disk"],
