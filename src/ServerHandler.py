@@ -36,13 +36,11 @@ class Sql:
                 user=self.sqluser, passwd=self.sqlpass, db="platypus")
 
     # Register server with IP and uid
-    def Register(self, name, hostname, ip):
+    def Register(self, server, uid):
         self.CheckConnection()
 
-        uid = uuid.uuid4()
-
-        self.c.execute("INSERT INTO %s (id,name,hostname,ip,uid) VALUES (%s,%s,%s,%s,%s)",
-                       (self.sqltable, id, name, hostname, ip, uid))
+        self.c.execute("INSERT INTO %s (uid) VALUES (%s) WHERE id=%s",
+                       (self.sqltable, uid, server["id"]))
         self.db.commit()
 
         print("Server registered", uid)
@@ -78,19 +76,19 @@ class Sql:
 
         return dbdata
 
-    def UuidToId(self, uid):
+    def Uuid(self, uid):
         self.CheckConnection()
 
-        self.c.execute("SELECT id,name,hostname FROM `" + self.sqltable +
+        self.c.execute("SELECT id,name,hostname,ip FROM `" + self.sqltable +
                        "` WHERE uuid='%s'" % uid)
         dbdata = self.c.fetchone()
 
         return dbdata
 
-    def IpToId(self, ip):
+    def Ip(self, ip):
         self.CheckConnection()
 
-        self.c.execute("SELECT id,name,hostname FROM `" +
+        self.c.execute("SELECT id,name,hostname,uuid FROM `" +
                        self.sqltable + "` WHERE ip='%s'" % ip)
         dbdata = self.c.fetchone()
 

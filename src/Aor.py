@@ -4,64 +4,55 @@ import json
 import ServerHandler
 import Slackbot
 
-bot = Slackbot.Bot()
 sql = ServerHandler.Sql()
-cache = ServerHandler.Cache()
 AliveSockets = set()
 
 
-class AorMaster(tornado.websocket.WebSocketHandler):
+class Aor(tornado.websocket.WebsocketHandler):
 
     def open(self):
-        print(self.request.remote_ip + " connected, asking for authentication...")
-        self.write_message('{"success": true, "require_auth": true}')
-        self.ip = self.request.remote_ip
-
-        d = sql.IpToId(self.ip)
-        j = json.dumps({
-            "id": d[0],
-            "online": True,
-            "disk": "refreshing",
-            "cpu": "refreshing",
-            "memory": "refreshing"
-        })
-        cache.TriggerOnline(str(d[0]))
-        SendFetchMessage(j)
-        bot.SingleReport(d[1], d[2], "online")
+        print(self.request.remote_ip, "connected to AOR, awaiting authentication")
+        try:
+            self.server = sql.Ip(self.request.remote_ip)
+        except:
+            print(self.request.remote_ip,
+                  "socket closed, unable to find ip in database")
+            self.close()
 
     def on_message(self, message):
-        raw = json.loads(message)
+        try:
+            message = json.loads(message)
+        except:
+            self.write_message('{"success":false,"message":"invalid_message"}')
 
-        if sql.Verify(raw["uuid"]):
-            #   print(self.ip, "provided vaid uuid", raw["uuid"])
-            d = sql.UuidToId(raw["uuid"])
-            # cache.Update(id, raw["stats"])
+        if self.server["verified"]:
             j = json.dumps({
-                "id": d[0],
+                "id": self.server["id"],
                 "online": True,
-                "disk": raw["stats"]["disk"],
-                "cpu": raw["stats"]["cpu"],
-                "memory": raw["stats"]["memory"]
+                "cpu": message["cpu"],
+                "disk": message["disk"],
+                "memory": message["memory"]
             })
             SendFetchMessage(j)
-            self.write_message('{"success": true, "require_auth": true}')
+            self.write_message('{"success":true,"message":"recieved_stats"}')
 
         else:
-            print(self.ip, "provided INVALID uuid", raw["uuid"])
-            self.write_message('{"success":false,"errcode":"invalid_uuid"}')
+            if message["masterkey"] == config.Get["masterkey"]:
+                print(self.server["name"], "registered uuid", message["uuid"])
+                sql.Register(self.server, message["uuid"])
+                self.write_message(
+                    '{"success":true,"message":"registered_uuid"}')
 
     def on_close(self):
-        d = sql.IpToId(self.request.remote_ip)
+        print(self.server["name"], "disconnected, assuming offline!")
         j = json.dumps({
-            "id": d[0],
+            "id": self.server["id"],
             "online": False,
-            "disk": 0,
             "cpu": 0,
+            "disk": 0,
             "memory": 0
         })
         SendFetchMessage(j)
-        bot.SingleReport(d[1], d[2], "offline")
-        cache.TriggerOffline(str(d[0]))
 
 
 class FetchWebsocket(tornado.websocket.WebSocketHandler):
