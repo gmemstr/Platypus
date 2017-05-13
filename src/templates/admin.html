@@ -13,8 +13,6 @@
     <h2>Register Server</h2>
     <form action="/admin" method="post">
         {% module xsrf_form_html() %}
-        <label for="id">Server ID</label>
-        <input type="id" name="id" id="id" placeholder="optional">
         <label for="name">Server Name</label>
         <input type="name" name="name" id="name">
         <label for="hostname">Server Hostname</label>
@@ -24,17 +22,19 @@
     </div><div class="item servers">
     <h2>Remove Servers</h2>
     <table id="table">
+    <tr>
         <th>id</th>
         <th>Name</th>
         <th>Hostname</th>
-        <th>UUID</th>
+        <th>IP Addr.</th>
         <th></th>
+        </tr>
         {% for s in servers %}
         <tr id="{{s[0]}}">
         <td>{{s[0]}}</td>
         <td>{{s[1]}}</td>
         <td>{{s[2]}}</td>
-        <td><input type="text" readonly="true" value="{{s[3]}}" id="uid"></td>
+        <td>{{s[3]}}</td>
         <td><button>Remove</button></td>
         {% end %}
         </table>
@@ -57,7 +57,7 @@
     }
     function Remove(panel){
         console.log("Removing panel " +panel)
-        Request("/admin"+panel,RefreshPage(),"DELETE");
+        Request("/admin",RefreshPage(),"DELETE");
     }
 </script>
 </body>

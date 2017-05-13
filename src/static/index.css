@@ -20,8 +20,8 @@ table {
 td{
     border: none;
     text-align: center;
-    width: 20%;
     padding: 8px;
+    width: 10px;
 }
 .nightmode td {
     border: none;
@@ -151,8 +151,9 @@ input:checked + .slider:before {
   transform: translate(-50%, -50%);
   padding: 5%;
   border:1px solid;
-  border-radius: 25px;
+  border-radius: 5px;
   background-color: white;
+  box-shadow: 1px 5px 5px #888888;
   padding-top: 0;
 }
 

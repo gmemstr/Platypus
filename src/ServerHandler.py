@@ -79,12 +79,12 @@ class Sql:
         self.CheckConnection()
         if id != "*":
             self.c.execute(
-                "SELECT id,name,hostname,uuid FROM `" +
+                "SELECT id,name,hostname,ip FROM `" +
                 self.sqltable + "` WHERE id=%s" % id)
             dbdata = self.c.fetchone()
         else:
             print(self.sqltable)
-            self.c.execute("SELECT id,name,hostname,uuid FROM `" +
+            self.c.execute("SELECT id,name,hostname,ip FROM `" +
                            self.sqltable + "`")
             dbdata = self.c.fetchall()
 
