@@ -1,7 +1,9 @@
 mysqlclient==1.3.10
+pep8==1.7.0
 psutil==5.2.1
 requests==2.13.0
 six==1.10.0
+slackclient==1.0.5
 tornado==4.4.2
+virtualenv==15.1.0
 websocket-client==0.40.0
-slackclient
