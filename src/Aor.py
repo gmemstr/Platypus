@@ -8,7 +8,7 @@ sql = ServerHandler.Sql()
 AliveSockets = set()
 
 
-class Aor(tornado.websocket.WebsocketHandler):
+class Aor(tornado.websocket.WebSocketHandler):
 
     def open(self):
         print(self.request.remote_ip,
