@@ -35,7 +35,7 @@ Monitors and reports statistics of your server infrastucture, including usage st
 ## Running
 Run `python setup.py` to set up your instance, including creating the MariaDB databse and setting an admin password.
 
-Finally you can run `python App.py` and go navigate to `127.0.0.1:8080/login` to get to the admin control panel.
+Finally you can run `python App.py` and go navigate to `127.0.0.1:8888/login` to get to the admin control panel.
 
 To expose it to the world, I recommend using an [nginx proxy](https://www.nginx.com/resources/admin-guide/reverse-proxy/).
 ## Configuration
