@@ -35,7 +35,11 @@
         <td>{{s[1]}}</td>
         <td>{{s[2]}}</td>
         <td>{{s[3]}}</td>
-        <td><button>Remove</button></td>
+        <td><form action="/admin/delete/{{s[0]}}" method="post">
+        {% module xsrf_form_html() %}
+
+            <input type="submit" value="Delete">
+        </form></td>
         {% end %}
         </table>
 

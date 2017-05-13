@@ -2,11 +2,14 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 import socket
+import bcrypt
 import ServerHandler
 import Aor
+import Config
 
 sql = ServerHandler.Sql()
 cache = ServerHandler.Cache()
+config = Config.Config()
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -37,8 +40,14 @@ class LoginManager(tornado.web.RequestHandler):
         self.render("templates/login.html")
 
     def post(self):
-        self.set_secure_cookie("i", "TODO_RANDOM_KEY")
-        self.redirect("/admin")
+        username = self.get_body_argument("username")
+        password = self.get_body_argument("password").encode('utf8')
+        admin_password = config.Get("admin_password").encode('utf8')
+        if username == config.Get("admin_username") and bcrypt.checkpw(password, admin_password):
+            self.set_secure_cookie("i", "TODO_RANDOM_KEY")
+            self.redirect("/admin")
+        else:
+            self.redirect("/login")
 
 
 class AdminInterface(BaseHandler):
@@ -48,16 +57,19 @@ class AdminInterface(BaseHandler):
         self.render("templates/admin.html", servers=sql.Get())
 
     @tornado.web.authenticated
-    def delete(self):
-        sql.Delete(self.get_body_argument("id"))
-        self.write("success")
-
-    @tornado.web.authenticated
     def post(self):
         ip = socket.gethostbyname(self.get_body_argument("hostname"))
         sql.New(self.get_body_argument("name"),
                 self.get_body_argument("hostname"),
                 ip)
+        self.write("success")
+
+
+class AdminInterfaceDelete(BaseHandler):
+
+    @tornado.web.authenticated
+    def post(self, id):
+        sql.Delete(id)
         self.write("success")
 
 
@@ -76,6 +88,7 @@ def make_app():
         (r"/fetch", Aor.FetchWebsocket),
         (r"/login", LoginManager),
         (r"/admin", AdminInterface),
+        (r"/admin/delete/([0-9]+)", AdminInterfaceDelete),
         (r"/aor", Aor.Aor)
     ], **settings)
 

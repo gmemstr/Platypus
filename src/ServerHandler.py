@@ -47,15 +47,15 @@ class Sql:
     def New(self, name, hostname, ip):
         self.CheckConnection()
 
-        self.c.execute("INSERT INTO %s (name,hostname,ip) VALUES (%s,%s,%s)",
-                       (self.sqltable, name, hostname, ip))
+        self.c.execute("INSERT INTO `" + self.sqltable + "` (name,hostname,ip) VALUES (%s,%s,%s)",
+                       (name, hostname, ip))
         self.db.commit()
 
     def Delete(self, id):
         self.CheckConnection()
 
-        self.c.execute("DELETE FROM %s WHERE id=%s",
-                       (self.sqltable, id))
+        self.c.execute("DELETE FROM `" + self.sqltable +
+                       "` WHERE id=%s" % int(id))
 
         self.db.commit()
 
