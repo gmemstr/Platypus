@@ -1,16 +1,12 @@
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
-import json
-import asyncio
-
-#from Scan import Scan
+import socket
 import ServerHandler
 import Aor
 
 sql = ServerHandler.Sql()
 cache = ServerHandler.Cache()
-#scan = Scan()
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -53,11 +49,16 @@ class AdminInterface(BaseHandler):
 
     @tornado.web.authenticated
     def delete(self):
-        pass
+        sql.Delete(self.get_body_argument("id"))
+        self.write("success")
 
     @tornado.web.authenticated
     def post(self):
-        pass
+        ip = socket.gethostbyname(self.get_body_argument("hostname"))
+        sql.New(self.get_body_argument("name"),
+                self.get_body_argument("hostname"),
+                ip)
+        self.write("success")
 
 
 def make_app():

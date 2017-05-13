@@ -44,6 +44,21 @@ class Sql:
         print("Server registered", uid)
     # Verify server has correct uid
 
+    def New(self, name, hostname, ip):
+        self.CheckConnection()
+
+        self.c.execute("INSERT INTO %s (name,hostname,ip) VALUES (%s,%s,%s)",
+                       (self.sqltable, name, hostname, ip))
+        self.db.commit()
+
+    def Delete(self, id):
+        self.CheckConnection()
+
+        self.c.execute("DELETE FROM %s WHERE id=%s",
+                       (self.sqltable, id))
+
+        self.db.commit()
+
     def Verify(self, uid):
         self.CheckConnection()
 
