@@ -11,10 +11,11 @@ AliveSockets = set()
 class Aor(tornado.websocket.WebsocketHandler):
 
     def open(self):
-        print(self.request.remote_ip, "connected to AOR, awaiting authentication")
+        print(self.request.remote_ip,
+              "connected to AOR, awaiting authentication")
         try:
             self.server = sql.Ip(self.request.remote_ip)
-        except:
+        except ValueError:
             print(self.request.remote_ip,
                   "socket closed, unable to find ip in database")
             self.close()

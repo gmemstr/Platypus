@@ -8,12 +8,10 @@
 
 import MySQLdb
 import Config
-import uuid
 import json
 
 
 class Sql:
-    # Initialize database & variables
 
     def __init__(self):
         self.config = Config.Config()
@@ -31,7 +29,7 @@ class Sql:
         try:
             self.db.ping()
         # Else reconnect
-        except:
+        except MySQLdb.MySQLError:
             self.db = MySQLdb.connect(
                 user=self.sqluser, passwd=self.sqlpass, db="platypus")
 
@@ -66,7 +64,8 @@ class Sql:
         self.CheckConnection()
         if id != "*":
             self.c.execute(
-                "SELECT id,name,hostname,uuid FROM `" + self.sqltable + "` WHERE id=%s" % id)
+                "SELECT id,name,hostname,uuid FROM `" +
+                self.sqltable + "` WHERE id=%s" % id)
             dbdata = self.c.fetchone()
         else:
             print(self.sqltable)
@@ -88,11 +87,14 @@ class Sql:
     def Ip(self, ip):
         self.CheckConnection()
 
-        self.c.execute("SELECT id,name,hostname,uuid FROM `" +
-                       self.sqltable + "` WHERE ip='%s'" % ip)
-        dbdata = self.c.fetchone()
+        try:
+            self.c.execute("SELECT id,name,hostname,uuid FROM `" +
+                           self.sqltable + "` WHERE ip='%s'" % ip)
+            dbdata = self.c.fetchone()
+            return dbdata
 
-        return dbdata
+        except MySQLdb.DataError:
+            raise ValueError("IP of server not registered")
 
 
 class Cache:
