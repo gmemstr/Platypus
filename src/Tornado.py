@@ -76,7 +76,7 @@ def make_app():
         (r"/fetch", Aor.FetchWebsocket),
         (r"/login", LoginManager),
         (r"/admin", AdminInterface),
-        (r"/aor", Aor.AorMaster)
+        (r"/aor", Aor.Aor)
     ], **settings)
 
 
