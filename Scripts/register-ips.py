@@ -9,6 +9,7 @@ dbdata = c.fetchall()
 
 for server in dbdata:
     ip = socket.gethostbyname(server[2])
-    print(server[0], server[1], ip)
+    c.execute("UPDATE server SET IP=%s where id=%s", (ip, server[0]))
+    db.commit()
 
 print("Done")
