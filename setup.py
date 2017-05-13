@@ -17,7 +17,8 @@ if __name__ == "__main__":
 
     c.execute("CREATE DATABASE IF NOT EXISTS platypus")
     c.execute("USE platypus")
-    c.execute("CREATE TABLE IF NOT EXISTS " + sql_database + " (id int NOT NULL AUTO_INCREMENT," +
+    c.execute("CREATE TABLE IF NOT EXISTS " + sql_database +
+              " (id int NOT NULL AUTO_INCREMENT," +
               "name varchar(120), hostname varchar(120)," +
               "online boolean DEFAULT true, ip varchar(50), uuid varchar(50)" +
               " PRIMARY KEY(id))")
