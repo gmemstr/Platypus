@@ -3,6 +3,7 @@ import tornado.web
 import tornado.websocket
 import socket
 import bcrypt
+from secrets import token_urlsafe
 import ServerHandler
 import Aor
 import Config
@@ -44,7 +45,7 @@ class LoginManager(tornado.web.RequestHandler):
         password = self.get_body_argument("password").encode('utf8')
         admin_password = config.Get("admin_password").encode('utf8')
         if username == config.Get("admin_username") and bcrypt.checkpw(password, admin_password):
-            self.set_secure_cookie("i", "TODO_RANDOM_KEY")
+            self.set_secure_cookie("i", token_urlsafe(32))
             self.redirect("/admin")
         else:
             self.redirect("/login")
@@ -76,7 +77,7 @@ class AdminInterfaceDelete(BaseHandler):
 def make_app():
 
     settings = {
-        "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
+        "cookie_secret": token_urlsafe(32),
         "login_url": "/login",
         "xsrf_cookies": True,
         "debug": True
