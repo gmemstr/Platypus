@@ -1,41 +1,30 @@
-![https://img.shields.io/badge/Status-Feature%20Freeze-blue.svg](https://img.shields.io/badge/Status-Code%20Freeze-blue.svg)
-
-Currently in feature freeze to polish for v3.0.
+ ![https://img.shields.io/badge/Status-v3.0%20In%20Progress-green.svg](https://img.shields.io/badge/Status-v3.0%20In%20Progress-green.svg)
 
 # Platypus
 
-[Live Master Branch](https://status.ggserv.xyz)
+[Live Stable Branch](https://status.ggserv.xyz)
 
-Scaleable Server Infrastructure Monitoring Python App
+Active online and usage monitor using websockets and Python
 
-(Probably Light and Technically Pretty Unassuming Software)
 
-Even More Buzzwords For SEO Reasons
-
-Monitors and reports statistics of your server infrastucture, including usage statistics, uptime, downtime, etc.
-
-### Current Features
+## Features
  - Setup script
- - Websocket-based uptime monitoring
+ - Websocket-based uptime monitoring (**AOR**)
  - Auto-post to Slack when server goes offline
  - Provide live server usage statistics with web frontend
  - Simple JSON API for building apps
-
-### Planned Features
- - Cleaner code
- - Smaller resource footprint
- - More advanced scanning method
+ - Admin interface for managing servers
 
 ## Requirements
  - Python 3.x (2.x not officially supported)
  - pip
   - `pip install -r requirements.txt`
- - MariaDB
+ - MariaDB or MySQL
 
 ## Running
-Run `python setup.py` to set up your instance, including creating the MariaDB databse and setting an admin password.
+Run `python setup.py` to set up your instance, including creating the databse and setting an admin password.
 
-Finally you can run `python App.py` and go navigate to `127.0.0.1:8888/login` to get to the admin control panel.
+Finally you can run `python App.py` and go navigate to `127.0.0.1:8080/login` to get to the admin control panel.
 
 To expose it to the world, I recommend using an [nginx proxy](https://www.nginx.com/resources/admin-guide/reverse-proxy/).
 ## Configuration
@@ -57,12 +46,9 @@ To expose it to the world, I recommend using an [nginx proxy](https://www.nginx.
 
 Included in the `Scripts` folder is the node-side `aor.py` script. This should be
 deployed to the machines you would like to monitor, and modified to point towards
-your master server. A docker image is available [here](#) if you would prefer to 
+your master server. A docker image is available _soon_ if you would prefer to 
 use that. You can also feel free to use your own custom script, however it has to
 be fully websocket compatible. See below about the data passed to the master.
-
-You'll want to edit `config.json` and deploy it alongside aor.py, otherwise
-it will use default values, and probably will not connect to your master. 
 
 ### Requirements:
 
@@ -74,17 +60,10 @@ it will use default values, and probably will not connect to your master.
 
 ### Deploying (Script)
 
-If you would like to tinker with the script, take a peek at `Scripts/generate_aor_packages.py`
-and modify the values to match up to your database. It will automagically create
-zip packages containing the `aor.py` and `aor_config.json` files (already filled
-out too).
+You'll need Python 3.x installed on your nodes. Deploy `aor.py` and `aor_config.json`. You'll also want to change some values in the config file
+to point towards the master, along with the master key. Your node with auto-authenticate
+with the master.
 
-Alternatively, you'll want to edit `Scripts/config.json` to match the values in your database,
-namely changing the `"UUID":` field. You can leave the interval alone. 
-
-Then you can copy the config and `aor.py` script to your server and run the script, 
-preferably in a `screen` session. For the most part you can leave the script alone
-at this point, you do not need to set up a reverse proxy or the likes.
 
 ### Deploying (Docker)
 
