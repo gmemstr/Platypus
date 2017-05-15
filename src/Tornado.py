@@ -95,8 +95,12 @@ def make_app():
 
 
 def run_app():
+    port = config.Get("webserver_port")
     app = make_app()
-    app.listen(8888)
+    app.listen(port)
+    print("Platypus master listening on port :", port)
+
     tornado.ioloop.IOLoop.current().start()
+
 
 run_app()
