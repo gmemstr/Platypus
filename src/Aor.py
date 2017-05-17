@@ -2,8 +2,9 @@ import tornado.ioloop
 import tornado.websocket
 import json
 import ServerHandler
-import Slackbot
+import Config
 
+config = Config.Config()
 sql = ServerHandler.Sql()
 AliveSockets = set()
 
@@ -13,11 +14,13 @@ class Aor(tornado.websocket.WebSocketHandler):
     def open(self):
         print(self.request.remote_ip,
               "connected to AOR, awaiting authentication")
+
         try:
             self.server = sql.Ip(self.request.remote_ip)
-        except ValueError:
+            self.write_message('{"success":true,"require_auth":"true"}')
+        except:
             print(self.request.remote_ip,
-                  "socket closed, unable to find ip in database")
+                  "socket closed, unable to find IP in database")
             self.close()
 
     def on_message(self, message):
@@ -26,34 +29,36 @@ class Aor(tornado.websocket.WebSocketHandler):
         except:
             self.write_message('{"success":false,"message":"invalid_message"}')
 
-        if self.server["verified"]:
+        if self.server[3] != "":
             j = json.dumps({
-                "id": self.server["id"],
+                "id": self.server[0],
                 "online": True,
-                "cpu": message["cpu"],
-                "disk": message["disk"],
-                "memory": message["memory"]
+                "cpu": message["stats"]["cpu"],
+                "disk": message["stats"]["disk"],
+                "memory": message["stats"]["memory"]
             })
             SendFetchMessage(j)
             self.write_message('{"success":true,"message":"recieved_stats"}')
 
         else:
-            if message["masterkey"] == config.Get["masterkey"]:
-                print(self.server["name"], "registered uuid", message["uuid"])
+            if message["masterkey"] == config.Get("master_key"):
+                print(self.server[1], "registered uuid", message["uuid"])
                 sql.Register(self.server, message["uuid"])
                 self.write_message(
                     '{"success":true,"message":"registered_uuid"}')
+                self.server[3] = message["uuid"]
 
     def on_close(self):
-        print(self.server["name"], "disconnected, assuming offline!")
-        j = json.dumps({
-            "id": self.server["id"],
-            "online": False,
-            "cpu": 0,
-            "disk": 0,
-            "memory": 0
-        })
-        SendFetchMessage(j)
+        if self.server is not None:
+            print(self.server[1], "disconnected, assuming offline!")
+            j = json.dumps({
+                "id": self.server[0],
+                "online": False,
+                "cpu": 0,
+                "disk": 0,
+                "memory": 0
+            })
+            SendFetchMessage(j)
 
 
 class FetchWebsocket(tornado.websocket.WebSocketHandler):

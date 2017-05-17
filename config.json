@@ -6,6 +6,7 @@
         "Default password is p1atyPus, run python setup.py to",
         "generate a new one."
     ],
+    "master_key": "aaa",
     "enable_slackbot": false,
     "enable_webserver": true,
     "webserver_port": 8080,

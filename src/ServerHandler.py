@@ -37,8 +37,8 @@ class Sql:
     def Register(self, server, uid):
         self.CheckConnection()
 
-        self.c.execute("INSERT INTO %s (uid) VALUES (%s) WHERE id=%s",
-                       (self.sqltable, uid, server["id"]))
+        self.c.execute("UPDATE " + self.sqltable + " SET uuid = %s WHERE id=%s",
+                       (uid, server[0]))
         self.db.commit()
 
         print("Server registered", uid)

@@ -1,7 +1,7 @@
 import websocket
-import time
 import json
 import psutil
+import uuid
 from time import sleep
 
 glblws = None
@@ -20,10 +20,11 @@ def GetStats():
 
 def on_message(ws, message):
     raw = json.loads(message)
-    if raw["success"] is True and raw["require_auth"] is True:
+    if raw["success"] is True:
         print("DEBUG", "SENDING DATA")
         stats = GetStats()
         data = {
+            "masterkey": config["masterkey"],
             "uuid": config["uuid"],
             "stats": {
                 "cpu": stats["cpu"],
@@ -33,7 +34,7 @@ def on_message(ws, message):
         }
         j = json.dumps(data)
         ws.send(j)
-        sleep(5)
+        sleep(config["interval"])
 
 
 def on_error(ws, error):
@@ -51,8 +52,12 @@ def on_open(ws):
 
 
 if __name__ == "__main__":
-    websocket.enableTrace(True)
-    ws = websocket.WebSocketApp("ws://localhost:8888/aor",
+    if config["uuid"] is None:
+        config["uuid"] = str(uuid.uuid4())
+        with open('aor_config.json', 'w+') as data_file:
+            json.dump(config, data_file, indent=4)
+
+    ws = websocket.WebSocketApp("ws://%s/aor" % config["master_url"],
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close)
