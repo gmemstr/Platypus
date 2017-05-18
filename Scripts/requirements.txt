@@ -1,0 +1,2 @@
+psutil==5.2.1
+websocket-client==0.40.0
