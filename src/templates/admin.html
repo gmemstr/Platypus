@@ -45,24 +45,5 @@
 
     </div>
     </div>
-<script>
-    function Request(url, callback, method = "GET") {
-        var request = new XMLHttpRequest();
-        request.open(method, url);
-        request.send();
-    
-        request.onreadystatechange = function () {
-            if (request.readyState == 4 && request.status == 200)
-                callback(request.responseText);
-        }
-    }
-    function RefreshPage() {
-        window.location.reload();
-    }
-    function Remove(panel){
-        console.log("Removing panel " +panel)
-        Request("/admin",RefreshPage(),"DELETE");
-    }
-</script>
 </body>
 </html>
