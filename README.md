@@ -27,6 +27,9 @@ Run `python setup.py` to set up your instance, including creating the databse an
 Finally you can run `python App.py` and go navigate to `127.0.0.1:8080/login` to get to the admin control panel.
 
 To expose it to the world, I recommend using an [nginx proxy](https://www.nginx.com/resources/admin-guide/reverse-proxy/).
+
+You can also use Docker if you want, with the included `Dockerfile`. You will need to configure
+your config before building, and use an external SQL server.
 ## Configuration
 
 | Key | Default Value | What is |
@@ -46,9 +49,7 @@ To expose it to the world, I recommend using an [nginx proxy](https://www.nginx.
 
 Included in the `Scripts` folder is the node-side `aor.py` script. This should be
 deployed to the machines you would like to monitor, and modified to point towards
-your master server. A docker image is available _soon_ if you would prefer to 
-use that. You can also feel free to use your own custom script, however it has to
-be fully websocket compatible. See below about the data passed to the master.
+your master server. There is also a `Dockerfile` available, again you will need to modify the config (`aor_config.json`) before building (just fill out the master key and master host). You can also feel free to use your own custom script, however it has to be fully websocket compatible. See below about the data passed to the master.
 
 ### Requirements:
 
@@ -67,4 +68,4 @@ with the master.
 
 ### Deploying (Docker)
 
-Coming soon
+Edit `aor_config.json` then build the image as you normally would.

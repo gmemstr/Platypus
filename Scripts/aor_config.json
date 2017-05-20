@@ -1,6 +1,6 @@
 {
-	"uuid": "5c4e9e72-d3ad-4242-af13-64c4446de457",
-    "masterkey": "aaa",
-	"master_url": "localhost:8080",
+	"uuid": "",
+    "masterkey": "",
+	"master_url": "",
 	"interval": 5
 }
