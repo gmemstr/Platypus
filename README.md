@@ -39,7 +39,7 @@ Master configuration (`config.json`)
 | enable_slackbot | false | Enable automated Slack reports |
 | enable_webserver | true | Enable web frontend and API | 
 | webserver_port | 8080 | Port for webserver to run on |
-| slack_api_key | | [API key for Slack posting](https://github.com/slackapi/python-slackclient)
+| slack_api_key | | [API key for Slack posting](https://github.com/slackapi/python-slackclient) |
 | admin_username | admin | Username for admin interface |
 | admin_password | | Password for admin interface |
 | sql_user | root | SQL database username |

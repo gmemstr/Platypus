@@ -1,6 +1,6 @@
 {
     "3": {
-        "online": true,
+        "online": false,
         "cpu": 0,
         "memory": -300,
         "disk": 0

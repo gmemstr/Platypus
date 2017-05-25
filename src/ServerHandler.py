@@ -132,8 +132,14 @@ class Cache:
         self.__dump()
 
     def Fetch(self):
-        return self.cache
+        with open("src/cache/data.json", "r") as data_file:
+            res = json.load(data_file)
+
+        return res
 
     def __dump(self):
         with open('src/cache/data.json', 'w+') as data_file:
             json.dump(self.cache, data_file, indent=4)
+
+        with open("src/cache/data.json", "r") as data_file:
+            self.cache = json.load(data_file)
