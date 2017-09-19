@@ -24,29 +24,35 @@ class Aor(tornado.websocket.WebSocketHandler):
             self.close()
 
     def on_message(self, message):
-        try:
-            message = json.loads(message)
-        except:
-            self.write_message('{"success":false,"message":"invalid_message"}')
-
-        if self.server[3] != "":
-            j = json.dumps({
-                "id": self.server[0],
-                "online": True,
-                "cpu": message["stats"]["cpu"],
-                "disk": message["stats"]["disk"],
-                "memory": message["stats"]["memory"]
-            })
-            SendFetchMessage(j)
-            self.write_message('{"success":true,"message":"recieved_stats"}')
+        message = json.loads(message)
+        if message["masterkey"] != config.Get("master_key"):
+            self.close()
+            print("Server gave us an invalid master key")
 
         else:
-            if message["masterkey"] == config.Get("master_key"):
-                print(self.server[1], "registered uuid", message["uuid"])
-                sql.Register(self.server, message["uuid"])
-                self.write_message(
-                    '{"success":true,"message":"registered_uuid"}')
-                self.server[3] = message["uuid"]
+            try:
+                message = json.loads(message)
+            except:
+                self.write_message('{"success":false,"message":"invalid_message"}')
+
+            if self.server[3] != "":
+                j = json.dumps({
+                    "id": self.server[0],
+                    "online": True,
+                    "cpu": message["stats"]["cpu"],
+                    "disk": message["stats"]["disk"],
+                    "memory": message["stats"]["memory"]
+                })
+                SendFetchMessage(j)
+                self.write_message('{"success":true,"message":"recieved_stats"}')
+
+            else:
+                if message["masterkey"] == config.Get("master_key"):
+                    print(self.server[1], "registered uuid", message["uuid"])
+                    sql.Register(self.server, message["uuid"])
+                    self.write_message(
+                        '{"success":true,"message":"registered_uuid"}')
+                    self.server[3] = message["uuid"]
 
     def on_close(self):
         if self.server is not None:

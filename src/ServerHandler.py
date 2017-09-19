@@ -106,6 +106,7 @@ class Sql:
             self.c.execute("SELECT id,name,hostname,uuid FROM `" +
                            self.sqltable + "` WHERE ip='%s'" % ip)
             dbdata = self.c.fetchone()
+            print(dbdata)
             return dbdata
 
         except MySQLdb.DataError:

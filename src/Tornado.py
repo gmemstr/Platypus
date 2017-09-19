@@ -23,16 +23,19 @@ class MainHandler(tornado.web.RequestHandler):
 
     def get(self):
         self.render("templates/index.html",
+                    company=config.Get("company_name"),
                     servers=sql.Get(), stats=cache.Fetch())
 
 
 class ResourceHandler(tornado.web.RequestHandler):
 
     def get(self, resource):
-        print(resource)
-        res = open('src/static/' + resource).read()
-        self.set_header("Content-Type", 'text/css; charset="utf-8"')
-        self.write(res)
+        try:
+            res = open('src/static/' + resource).read()
+            self.set_header("Content-Type", 'text/css; charset="utf-8"')
+            self.write(res)
+        except:
+            self.write("404 - not found")
 
 
 class LoginManager(tornado.web.RequestHandler):

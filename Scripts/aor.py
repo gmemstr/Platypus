@@ -52,7 +52,7 @@ def on_open(ws):
 
 
 if __name__ == "__main__":
-    if config["uuid"] is None:
+    if config["uuid"] is None or config["uuid"] == "":
         config["uuid"] = str(uuid.uuid4())
         with open('aor_config.json', 'w+') as data_file:
             json.dump(config, data_file, indent=4)

@@ -17,5 +17,6 @@
     "sql_user": "root",
     "sql_host": "localhost",
     "sql_pass": "",
-    "sql_db": "server"
+    "sql_db": "server",
+    "company_name": "Simmering Servers"
 }
