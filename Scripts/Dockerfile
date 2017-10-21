@@ -10,8 +10,5 @@ ADD . /aor
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
-# Define environment variable
-ENV NAME World
-
 # Run app.py when the container launches
 CMD ["python", "aor.py"]

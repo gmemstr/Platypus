@@ -15,6 +15,10 @@ Active online and usage monitor using websockets and Python
  - Simple JSON API for building apps
  - Admin interface for managing servers
 
+## Getting Started
+
+Please see the wiki page [Getting Started](https://github.com/gmemstr/Platypus/wiki/Getting-Started)
+
 ## Requirements
  - Python 3.x (2.x not officially supported)
  - pip

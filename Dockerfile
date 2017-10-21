@@ -13,8 +13,5 @@ RUN pip install -r requirements.txt
 # Make port 80 available to the world outside this container
 EXPOSE 8080
 
-# Define environment variable
-ENV NAME World
-
 # Run app.py when the container launches
 CMD ["python", "src/Tornado.py"]
