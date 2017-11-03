@@ -16,6 +16,7 @@ class Aor(tornado.websocket.WebSocketHandler):
               "connected to AOR, awaiting authentication")
 
         try:
+            print(self.request.remote_ip)
             self.server = sql.Ip(self.request.remote_ip)
             self.write_message('{"success":true,"require_auth":"true"}')
         except:
@@ -35,7 +36,7 @@ class Aor(tornado.websocket.WebSocketHandler):
             except:
                 self.write_message('{"success":false,"message":"invalid_message"}')
 
-            if self.server[3] != "":
+            if self.server[0] != None:
                 j = json.dumps({
                     "id": self.server[0],
                     "online": True,
