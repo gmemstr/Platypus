@@ -26,58 +26,7 @@ Please see the wiki page [Getting Started](https://github.com/gmemstr/Platypus/w
  - MariaDB or MySQL
 
 ## Running
-Run `python setup.py` to set up your instance, including creating the databse and setting an admin password.
-
-Finally you can run `python App.py` and go navigate to `127.0.0.1:8080/login` to get to the admin control panel.
-
-To expose it to the world, I recommend using an [nginx proxy](https://www.nginx.com/resources/admin-guide/reverse-proxy/) ([example](https://gist.github.com/gmemstr/5ec861fefa8354d5b9553938325b48e9)).
-
-You can also use Docker if you want, with the included `Dockerfile`. You will need to configure
-your config before building, and use an external SQL server.
-## Configuration
-
-Master configuration (`config.json`)
-
-| Key | Default Value | What is |
-| --- | ------------- | ------- |
-| enable_slackbot | false | Enable automated Slack reports |
-| enable_webserver | true | Enable web frontend and API | 
-| webserver_port | 8080 | Port for webserver to run on |
-| slack_api_key | | [API key for Slack posting](https://github.com/slackapi/python-slackclient) |
-| admin_username | admin | Username for admin interface |
-| admin_password | | Password for admin interface |
-| sql_user | root | SQL database username |
-| sql_pass | | SQL database password |
-| sql_host | localhost | SQL database host |
-| sql_db | server | SQL data table |
-
-SQL (MySQL/MariaDB)
-
-| Key | Type | Args | What is |
-| --- | ------------- | --- | ------- |
-| id | int | NOT NULL AUTO_INCREMENT | ID of server |
-| name | varchar(120) | | Name of server |
-| hostname | varchar(120) | | Domain or IP of server |
-| online | boolean | DEFAULT true | Caching whether server is actually online |
-| ip | varchar(50) | | Used to identify servers requesting UUID registration |
-| uuid | varchar(50) | | Used to identify registered servers |
-
-```
-Other notes:
-
- - Databse: Platypus
- - PRIMARY KEY: id
-```
-
-Node configuration (`aor_config.json`)
-
-| Key | Default Value | What is |
-| --- | ------------- | ------- |
-| uuid |  | Auto-generated node unique identifier |
-| masterkey | | "API" key for authentication with master server |
-| master_url | | URL or IP for the master server |
-| interval | 5 | Delay between sending usage statistics |
-
+See [Getting Started](https://github.com/gmmemstr/Platypus/wiki/Getting-Started)
 
 ## Script
 
