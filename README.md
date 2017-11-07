@@ -27,28 +27,3 @@ Please see the wiki page [Getting Started](https://github.com/gmemstr/Platypus/w
 
 ## Running
 See [Getting Started](https://github.com/gmmemstr/Platypus/wiki/Getting-Started)
-
-## Script
-
-Included in the `Scripts` folder is the node-side `aor.py` script. This should be
-deployed to the machines you would like to monitor, and modified to point towards
-your master server. There is also a `Dockerfile` available, again you will need to modify the config (`aor_config.json`) before building (just fill out the master key and master host). You can also feel free to use your own custom script, however it has to be fully websocket compatible. See below about the data passed to the master.
-
-### Requirements:
-
- - Python 3.x
- - websocket
- - psutil
-
-`pip install websocket psutil`
-
-### Deploying (Script)
-
-You'll need Python 3.x installed on your nodes. Deploy `aor.py` and `aor_config.json`. You'll also want to change some values in the config file
-to point towards the master, along with the master key. Your node with auto-authenticate
-with the master.
-
-
-### Deploying (Docker)
-
-Edit `aor_config.json` then build the image as you normally would.
