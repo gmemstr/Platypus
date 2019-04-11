@@ -3,6 +3,7 @@ package stats
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net"
 )
 
@@ -13,23 +14,11 @@ type ResponseMessage struct {
 
 // Main listener for incoming client data, listening on port 4050 on TCP.
 func Listener()  {
-	listener, err := net.Listen("tcp", "0.0.0.0:4050")
-	defer listener.Close()
-	if err != nil {
-		panic(err)
-	}
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			// handle error
-		}
-		go Handler(conn)
-	}
+	
 }
 
 // Handles individual connections, parsing JSON data from client and writing a message.
 func Handler(c net.Conn) {
-	defer c.Close()
 	var b bytes.Buffer
 
 	// Read data in from client.
@@ -40,7 +29,7 @@ func Handler(c net.Conn) {
 	}
 	b.Write(buffer)
 	b.Truncate(len)
-
+	fmt.Printf("Recieved %v\n", b.String())
 	WriteMessage("success", "Read and parsed client message", c)
 }
 
