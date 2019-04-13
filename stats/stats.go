@@ -1,13 +1,11 @@
 package stats
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/gmemstr/platypus/common"
 	"github.com/gorilla/websocket"
-	"io"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -24,7 +22,6 @@ type Server struct {
 }
 
 var servers []Server
-var r, w = io.Pipe()
 var upgrader = websocket.Upgrader{}
 
 // Handles individual connections, parsing JSON data from client and writing a message.
@@ -70,18 +67,8 @@ func Handler() common.Handler {
 }
 
 func ServerAuthHandler(c *websocket.Conn) (bool, error) {
-	buf := new(bytes.Buffer)
-	_, err := buf.ReadFrom(r)
-	if err != nil {
-		return false, err
-	}
-	var serverList []Server
-	err = json.Unmarshal(buf.Bytes(), &serverList)
-	if err != nil {
-		return false, err
-	}
-	for i := range serverList {
-		if serverList[i].Ip == c.RemoteAddr().String() {
+	for i := range servers {
+		if servers[i].Ip == c.RemoteAddr().String() {
 			return true, nil
 		}
 	}
@@ -90,38 +77,30 @@ func ServerAuthHandler(c *websocket.Conn) (bool, error) {
 }
 
 func WriteStats(ip string, stats UsageStats) error {
-	serverList, err := ReadStats()
-	if err != nil {
-		return err
-	}
-
-	for i := range serverList {
-		if serverList[i].Ip == ip {
-			serverList[i].Stats = stats
+	create := true
+	for i := range servers {
+		if servers[i].Ip == ip {
+			servers[i].Stats = stats
+			create = false
 		}
 	}
+	if create {
+		servers = append(servers,  Server{
+			Ip: ip,
+			Stats: stats,
+		})
+	}
 
-	jsonServers, err := json.Marshal(serverList)
-
-	_, err = fmt.Fprint(w, jsonServers)
+	jsonServers, err := json.Marshal(servers)
 	if err != nil {
 		return err
 	}
-	w.Close()
-	return nil
-}
+	ioutil.WriteFile("stats.json", jsonServers, 0644)
+	if err != nil {
+		return err
+	}
 
-func ReadStats() ([]Server, error) {
-	buf := new(bytes.Buffer)
-	_, err := buf.ReadFrom(r)
-	if err != nil {
-		return servers, err
-	}
-	err = json.Unmarshal(buf.Bytes(), &servers)
-	if err != nil {
-		return servers, err
-	}
-	return servers, nil
+	return nil
 }
 
 // Close handler, begin chain of escalation.
