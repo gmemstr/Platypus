@@ -17,12 +17,17 @@ type UsageStats struct {
 }
 
 type Server struct {
-	Ip string
-	Stats UsageStats
+	Ip string `json:"ip"`
+	Stats UsageStats `json:"stats"`
+	Online bool `json:"online"`
 }
 
-var servers []Server
-var upgrader = websocket.Upgrader{}
+var Servers []Server
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
 
 // Handles individual connections, parsing JSON data from client and writing a message.
 func Handler() common.Handler {
@@ -32,25 +37,24 @@ func Handler() common.Handler {
 			panic(err)
 		}
 		defer c.Close()
-		accept, err := ServerAuthHandler(c)
-		if err != nil {
-			panic(err)
-		}
-		if accept != true {
-			_ = c.Close()
-			return nil
-		}
 		c.SetCloseHandler(CloseHandler)
 
 		for {
 			mt, message, err := c.ReadMessage()
 			if err != nil {
+				_ = SetOffline(c.RemoteAddr().String())
 				break
 			}
 			stats := UsageStats{}
 			err = json.Unmarshal(message, &stats)
 			if err != nil {
 				break
+			}
+			secretKey, err := ioutil.ReadFile(".secret")
+			key := string(secretKey)
+			if stats.Secret != key {
+				_ = c.WriteMessage(mt, []byte("invalid secret key"))
+				_ = c.Close()
 			}
 			err = WriteStats(c.RemoteAddr().String(), stats)
 			if err != nil {
@@ -66,36 +70,47 @@ func Handler() common.Handler {
 	}
 }
 
-func ServerAuthHandler(c *websocket.Conn) (bool, error) {
-	for i := range servers {
-		if servers[i].Ip == c.RemoteAddr().String() {
-			return true, nil
+func SetOffline(ip string) error {
+	for i := range Servers {
+		if Servers[i].Ip == ip {
+			Servers[i].Online = false
 		}
 	}
 
-	return true, nil
+	jsonServers, err := json.MarshalIndent(Servers, "", "  ")
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile("stats.json", jsonServers, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func WriteStats(ip string, stats UsageStats) error {
 	create := true
-	for i := range servers {
-		if servers[i].Ip == ip {
-			servers[i].Stats = stats
+	for i := range Servers {
+		if Servers[i].Ip == ip {
+			Servers[i].Stats = stats
+			Servers[i].Online = true
 			create = false
 		}
 	}
 	if create {
-		servers = append(servers,  Server{
+		Servers = append(Servers,  Server{
 			Ip: ip,
 			Stats: stats,
+			Online: true,
 		})
 	}
 
-	jsonServers, err := json.Marshal(servers)
+	jsonServers, err := json.MarshalIndent(Servers, "", "  ")
 	if err != nil {
 		return err
 	}
-	ioutil.WriteFile("stats.json", jsonServers, 0644)
+	err = ioutil.WriteFile("stats.json", jsonServers, 0644)
 	if err != nil {
 		return err
 	}

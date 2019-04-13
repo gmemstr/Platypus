@@ -5,5 +5,15 @@
 </head>
 <body>
 	<p>WIP</p>
+	<script>
+		webSocket = new WebSocket("ws://localhost:3000/getstats");
+		webSocket.onopen = function(event) {
+			webSocket.send("");
+			console.log(event);
+		}
+		webSocket.onmessage = function (event) {
+			console.log(event.data);
+		}
+	</script>
 </body>
 </html>

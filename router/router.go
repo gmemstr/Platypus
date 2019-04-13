@@ -5,8 +5,12 @@ import (
 	"github.com/gmemstr/platypus/common"
 	"github.com/gmemstr/platypus/stats"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"time"
 )
 
 type NewConfig struct {
@@ -16,6 +20,12 @@ type NewConfig struct {
 	Description string
 	Image       string
 	PodcastURL  string
+}
+
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
 }
 
 // Handle takes multiple Handler and executes them in a serial order starting from first to last.
@@ -53,10 +63,72 @@ func Init() *mux.Router {
 		stats.Handler(),
 	)).Methods("GET")
 
+	r.Handle("/getstats", Handle(
+		StatsWs(),
+	)).Methods("GET")
+
 	return r
 }
 
-// Handles / endpoint
+func StatsWs() common.Handler {
+	return func(rc *common.RouterContext, w http.ResponseWriter, r *http.Request) *common.HTTPError {
+		interrupt := make(chan os.Signal, 1)
+		signal.Notify(interrupt, os.Interrupt)
+
+		c, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			panic(err)
+		}
+		defer c.Close()
+
+		done := make(chan struct{})
+		go func() {
+			defer close(done)
+			for {
+				_, message, err := c.ReadMessage()
+				if err != nil {
+					break
+				}
+				log.Printf("recv: %v", message)
+			}
+		}()
+
+		ticker := time.NewTicker(time.Second)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-done:
+				return nil
+			case <-ticker.C:
+				s := stats.Servers
+				err = c.WriteJSON(s)
+				if err != nil {
+					break
+				}
+			case <-interrupt:
+				log.Println("interrupt")
+
+				// Cleanly close the connection by sending a close message and then
+				// waiting (with timeout) for the server to close the connection.
+				err := c.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
+				if err != nil {
+					log.Println("write close:", err)
+					return nil
+				}
+				select {
+				case <-done:
+				case <-time.After(time.Second):
+				}
+				return nil
+			}
+		}
+
+		return nil
+	}
+}
+
+		// Handles / endpoint
 func rootHandler() common.Handler {
 	return func(rc *common.RouterContext, w http.ResponseWriter, r *http.Request) *common.HTTPError {
 

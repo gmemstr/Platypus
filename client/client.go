@@ -77,6 +77,7 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
+			stats.Secret = conf.Secret
 			statsJson, err := json.Marshal(stats)
 			if err != nil {
 				panic(err)

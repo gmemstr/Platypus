@@ -1,2 +1,4 @@
 .idea/
-client/pclient
+.secret
+stats.json
+client/config.yml
