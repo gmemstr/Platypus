@@ -59,7 +59,7 @@ func main() {
 		for {
 			_, message, err := c.ReadMessage()
 			if err != nil {
-				panic(err)
+				break
 			}
 			log.Printf("recv: %v", message)
 		}
@@ -75,12 +75,12 @@ func main() {
 		case <-ticker.C:
 			stats, err := GetStats()
 			if err != nil {
-				panic(err)
+				break
 			}
 			stats.Secret = conf.Secret
 			statsJson, err := json.Marshal(stats)
 			if err != nil {
-				panic(err)
+				break
 			}
 			err = c.WriteMessage(websocket.TextMessage, statsJson)
 			if err != nil {

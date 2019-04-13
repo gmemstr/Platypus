@@ -8,19 +8,8 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
-	"os"
-	"os/signal"
 	"time"
 )
-
-type NewConfig struct {
-	Name        string
-	Host        string
-	Email       string
-	Description string
-	Image       string
-	PodcastURL  string
-}
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -28,8 +17,6 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-// Handle takes multiple Handler and executes them in a serial order starting from first to last.
-// In case, Any middle ware returns an error, The error is logged to console and sent to the user, Middlewares further up in chain are not executed.
 func Handle(handlers ...common.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -72,9 +59,6 @@ func Init() *mux.Router {
 
 func StatsWs() common.Handler {
 	return func(rc *common.RouterContext, w http.ResponseWriter, r *http.Request) *common.HTTPError {
-		interrupt := make(chan os.Signal, 1)
-		signal.Notify(interrupt, os.Interrupt)
-
 		c, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			panic(err)
@@ -93,7 +77,7 @@ func StatsWs() common.Handler {
 			}
 		}()
 
-		ticker := time.NewTicker(time.Second)
+		ticker := time.NewTicker(5 * time.Second)
 		defer ticker.Stop()
 
 		for {
@@ -106,21 +90,6 @@ func StatsWs() common.Handler {
 				if err != nil {
 					break
 				}
-			case <-interrupt:
-				log.Println("interrupt")
-
-				// Cleanly close the connection by sending a close message and then
-				// waiting (with timeout) for the server to close the connection.
-				err := c.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
-				if err != nil {
-					log.Println("write close:", err)
-					return nil
-				}
-				select {
-				case <-done:
-				case <-time.After(time.Second):
-				}
-				return nil
 			}
 		}
 
@@ -128,7 +97,6 @@ func StatsWs() common.Handler {
 	}
 }
 
-		// Handles / endpoint
 func rootHandler() common.Handler {
 	return func(rc *common.RouterContext, w http.ResponseWriter, r *http.Request) *common.HTTPError {
 
@@ -145,11 +113,5 @@ func rootHandler() common.Handler {
 		}
 
 		return common.ReadAndServeFile(file, w)
-	}
-}
-
-func adminHandler() common.Handler {
-	return func(rc *common.RouterContext, w http.ResponseWriter, r *http.Request) *common.HTTPError {
-		return common.ReadAndServeFile("web/admin.html", w)
 	}
 }

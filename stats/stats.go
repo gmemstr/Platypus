@@ -56,6 +56,8 @@ func Handler() common.Handler {
 				_ = c.WriteMessage(mt, []byte("invalid secret key"))
 				_ = c.Close()
 			}
+			// Blank out secret key after comparing.
+			stats.Secret = ""
 			err = WriteStats(c.RemoteAddr().String(), stats)
 			if err != nil {
 				break

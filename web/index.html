@@ -5,6 +5,7 @@
 </head>
 <body>
 	<p>WIP</p>
+	<div id="list"></div>
 	<script>
 		webSocket = new WebSocket("ws://localhost:3000/getstats");
 		webSocket.onopen = function(event) {
@@ -12,7 +13,12 @@
 			console.log(event);
 		}
 		webSocket.onmessage = function (event) {
-			console.log(event.data);
+			buildList(event.data)
+		}
+
+		function buildList(data) {
+			var div = document.querySelector("#list");
+			div.innerHTML = data;
 		}
 	</script>
 </body>

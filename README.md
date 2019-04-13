@@ -1,8 +1,39 @@
 # Platypus
 ## Simple server and application monitoring
 
+### Dependencies
 
-### Rewrite 
+```bash
+go get github.com/gorilla/mux
+go get github.com/gorilla/websocket
+go get github.com/go-yaml/yaml
+go get github.com/shirou/gopsutil
+```
+
+### Usage
+
+Master server:
+```bash
+go build -o platypus main.go
+chmod +x platypus
+./platypus
+```
+
+Client servers:
+```bash
+go build -o platypus_client client/client.go
+chmod +x platypus_client
+nano config.yml
+# Input your secret key and master server IP here, secret key found on master server in .secret
+# master: example.com
+# secret: s3cr3tk3y
+# End config
+./platypus_client
+```
+
+Navigate to your master server and check out the stats.
+
+## Rewrite 
 
 Rewriting this from the ground up. Why did I do this in Python.
 
@@ -11,7 +42,7 @@ and instead break things up into smaller chunks, maybe moving this to it's own
 GitHub / Gitlab org, which will allow it to be much more modular and open ended
 when it comes to what kind of information you want to monitor and how.
 
-#### Steps
+### Steps
 
 1. Rewriting the core functionality, which is a basic stats dashboard
 and server management through an admin interface. We also want to rethink how to
