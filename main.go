@@ -34,6 +34,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	// Cache server stats in event master goes down.
+	defer func() {
+		jsonServers, err := json.MarshalIndent(stats.Servers, "", "  ")
+		if err != nil {
+			panic(err)
+		}
+		err = ioutil.WriteFile("stats.json", jsonServers, 0644)
+		if err != nil {
+			panic(err)
+		}
+	}()
+
 
 	// Start up server.
 	r := router.Init()

@@ -107,16 +107,7 @@ func WriteStats(ip string, stats UsageStats) error {
 			Online: true,
 		})
 	}
-
-	jsonServers, err := json.MarshalIndent(Servers, "", "  ")
-	if err != nil {
-		return err
-	}
-	err = ioutil.WriteFile("stats.json", jsonServers, 0644)
-	if err != nil {
-		return err
-	}
-
+	
 	return nil
 }
 
