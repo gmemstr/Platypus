@@ -2,10 +2,11 @@ package router
 
 import (
 	"fmt"
+	"github.com/gmemstr/platypus/common"
+	"github.com/gmemstr/platypus/stats"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"github.com/gorilla/mux"
-	"github.com/gmemstr/platypus/common"
 )
 
 type NewConfig struct {
@@ -46,6 +47,10 @@ func Init() *mux.Router {
 	// Paths that require specific handlers
 	r.Handle("/", Handle(
 		rootHandler(),
+	)).Methods("GET")
+
+	r.Handle("/stats", Handle(
+		stats.Handler(),
 	)).Methods("GET")
 
 	return r

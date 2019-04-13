@@ -1,2 +1,2 @@
-master: 127.0.0.1
+master: 127.0.0.1:3000
 secret: secretkey
