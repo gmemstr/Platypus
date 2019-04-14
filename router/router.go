@@ -64,7 +64,11 @@ func StatsWs() common.Handler {
 			panic(err)
 		}
 		defer c.Close()
-
+		s := stats.Servers
+		err = c.WriteJSON(s)
+		if err != nil {
+			c.Close()
+		}
 		done := make(chan struct{})
 		go func() {
 			defer close(done)

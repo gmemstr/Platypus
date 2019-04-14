@@ -46,11 +46,10 @@ func main() {
 		}
 	}()
 
-
 	// Start up server.
 	r := router.Init()
-	fmt.Println("Your Platytpus instance is live on port :3000")
-	log.Fatal(http.ListenAndServe(":3000", r))
+	fmt.Println("Your Platytpus instance is live on port :8080")
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
 func SecretKey() {
