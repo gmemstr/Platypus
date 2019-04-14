@@ -9,6 +9,7 @@ import (
 	"github.com/shirou/gopsutil/mem"
 	"io/ioutil"
 	"log"
+	"math"
 	"net/url"
 	"os"
 	"time"
@@ -96,19 +97,19 @@ func GetStats() (UsageStats, error) {
 	if err != nil {
 		return stats, err
 	}
-	stats.Disk = diskUsage.UsedPercent
+	stats.Disk = math.Round(diskUsage.UsedPercent)
 
 	cpuUsage, err := cpu.Percent(0, false)
 	if err != nil {
 		return stats, err
 	}
-	stats.Cpu = cpuUsage[0]
+	stats.Cpu = math.Round(cpuUsage[0])
 
 	memUsage, err := mem.VirtualMemory()
 	if err != nil {
 		return stats, err
 	}
-	stats.Memory = memUsage.UsedPercent
+	stats.Memory = math.Round(memUsage.UsedPercent)
 
 	hostname, err := os.Hostname()
 	if err != nil {
