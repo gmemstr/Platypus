@@ -7,9 +7,11 @@ import (
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 type UsageStats struct {
+	Hostname string `json:"hostname"`
 	Cpu    float64 `json:"cpu"`
 	Memory float64 `json:"memory"`
 	Disk   float64 `json:"disk"`
@@ -17,12 +19,11 @@ type UsageStats struct {
 }
 
 type Server struct {
-	Ip string `json:"ip"`
-	Stats UsageStats `json:"stats"`
-	Online bool `json:"online"`
+	Stats   UsageStats `json:"stats"`
+	Online  bool       `json:"online"`
 }
 
-var Servers []Server
+var Servers map[string] Server
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
 		return true
@@ -37,12 +38,18 @@ func Handler() common.Handler {
 			panic(err)
 		}
 		defer c.Close()
+
+		// Filter out websocket port, stick to plain IP.
+		ip := c.RemoteAddr().String()
+		ip = strings.Split(ip, ":")[0]
+
+		// @TODO Set up escalation process when socket closes.
 		c.SetCloseHandler(CloseHandler)
 
 		for {
 			mt, message, err := c.ReadMessage()
 			if err != nil {
-				_ = SetOffline(c.RemoteAddr().String())
+				_ = SetOffline(ip)
 				break
 			}
 			stats := UsageStats{}
@@ -58,7 +65,7 @@ func Handler() common.Handler {
 			}
 			// Blank out secret key after comparing.
 			stats.Secret = ""
-			err = WriteStats(c.RemoteAddr().String(), stats)
+			err = WriteStats(ip, stats)
 			if err != nil {
 				break
 			}
@@ -73,10 +80,10 @@ func Handler() common.Handler {
 }
 
 func SetOffline(ip string) error {
-	for i := range Servers {
-		if Servers[i].Ip == ip {
-			Servers[i].Online = false
-		}
+	server, ok := Servers[ip]
+	if ok {
+		server.Online = false
+		Servers[ip] = server
 	}
 
 	jsonServers, err := json.MarshalIndent(Servers, "", "  ")
@@ -92,22 +99,19 @@ func SetOffline(ip string) error {
 }
 
 func WriteStats(ip string, stats UsageStats) error {
-	create := true
-	for i := range Servers {
-		if Servers[i].Ip == ip {
-			Servers[i].Stats = stats
-			Servers[i].Online = true
-			create = false
-		}
+	server, ok := Servers[ip]
+	if ok {
+		server.Stats = stats
+		server.Online = true
 	}
-	if create {
-		Servers = append(Servers,  Server{
-			Ip: ip,
+	if !ok {
+		server = Server{
 			Stats: stats,
 			Online: true,
-		})
+		}
 	}
-	
+	Servers[ip] = server
+
 	return nil
 }
 

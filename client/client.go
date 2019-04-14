@@ -16,10 +16,11 @@ import (
 )
 
 type UsageStats struct {
-	Cpu    float64 `json:"cpu"`
-	Memory float64 `json:"memory"`
-	Disk   float64 `json:"disk"`
-	Secret string  `json:"secret"`
+	Hostname string  `json:"hostname"`
+	Cpu      float64 `json:"cpu"`
+	Memory   float64 `json:"memory"`
+	Disk     float64 `json:"disk"`
+	Secret   string  `json:"secret"`
 }
 
 type Configuration struct {
@@ -108,7 +109,8 @@ func main() {
 
 // Fetch usage stats using gopsutil.
 func GetStats() (UsageStats, error) {
-	stats := UsageStats{}
+	stats := UsageStats{
+	}
 	diskUsage, err := disk.Usage("/")
 	if err != nil {
 		return stats, err
@@ -127,5 +129,10 @@ func GetStats() (UsageStats, error) {
 	}
 	stats.Memory = memUsage.UsedPercent
 
+	hostname, err := os.Hostname()
+	if err != nil {
+		return stats, err
+	}
+	stats.Hostname = hostname
 	return stats, nil
 }

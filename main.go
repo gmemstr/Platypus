@@ -20,7 +20,7 @@ func main() {
 		SecretKey()
 	}
 	if _, err := os.Stat("stats.json"); os.IsNotExist(err) {
-		err = ioutil.WriteFile("stats.json", []byte("[]"), 0644)
+		err = ioutil.WriteFile("stats.json", []byte("{}"), 0644)
 		if err != nil {
 			panic(err)
 		}
