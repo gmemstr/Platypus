@@ -39,7 +39,7 @@ func Init() *mux.Router {
 	r := mux.NewRouter()
 
 	// "Static" paths
-	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("web/assets"))))
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
 	// Paths that require specific handlers
 	r.Handle("/", Handle(

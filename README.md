@@ -1,6 +1,8 @@
 # Platypus
 ## Simple server and application monitoring
 
+**For the stock frontend, see [github.com/gmemstr/platypus-react](https://github.com/gmemstr/platypus-react)**
+
 ### Dependencies
 
 ```bash

@@ -1,3 +1,6 @@
 [submodule "web"]
 	path = web
 	url = git@github.com:gmemstr/platypus-react.git
+[submodule "platypus-react"]
+	path = platypus-react
+	url = git@github.com:gmemstr/platypus-react.git
