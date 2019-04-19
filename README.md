@@ -1,7 +1,8 @@
 # Platypus
-## Simple server and application monitoring
+## Simple realtime server monitoring
 
-**For the stock frontend, see [github.com/gmemstr/platypus-react](https://github.com/gmemstr/platypus-react)**
+[![https://img.shields.io/badge/demo-status.gmem.ca-black.svg](https://img.shields.io/badge/demo-status.gmem.ca-black.svg?style=for-the-badge)](https://status.gmem.ca) 
+[![https://img.shields.io/badge/frontend-gmemstr%2Fplatypus--react-blue.svg](https://img.shields.io/badge/frontend-gmemstr%2Fplatypus--react-blue.svg?style=for-the-badge)](https://github.com/gmemstr/platypus-react)
 
 ### Dependencies
 
