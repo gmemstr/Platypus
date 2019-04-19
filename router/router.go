@@ -81,7 +81,8 @@ func StatsWs() common.Handler {
 			}
 		}()
 
-		ticker := time.NewTicker(5 * time.Second)
+		interval := time.Duration(common.Config.Interval) * time.Second
+		ticker := time.NewTicker(interval)
 		defer ticker.Stop()
 
 		for {

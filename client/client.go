@@ -49,7 +49,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer c.Close()
+	defer func() {
+		err := c.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
+		if err != nil {
+			log.Println("write close:", err)
+		}
+		c.Close()
+	}()
 
 	done := make(chan struct{})
 	go func() {

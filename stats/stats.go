@@ -3,11 +3,11 @@ package stats
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/gmemstr/platypus/common"
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"net/http"
-	"strings"
 )
 
 type UsageStats struct {
@@ -33,15 +33,12 @@ var upgrader = websocket.Upgrader{
 // Handles individual connections, parsing JSON data from client and writing a message.
 func Handler() common.Handler {
 	return func(rc *common.RouterContext, w http.ResponseWriter, r *http.Request) *common.HTTPError {
+		hostname := ""
 		c, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			panic(err)
 		}
 		defer c.Close()
-
-		// Filter out websocket port, stick to plain IP.
-		ip := c.RemoteAddr().String()
-		ip = strings.Split(ip, ":")[0]
 
 		// @TODO Set up escalation process when socket closes.
 		c.SetCloseHandler(CloseHandler)
@@ -49,7 +46,7 @@ func Handler() common.Handler {
 		for {
 			mt, message, err := c.ReadMessage()
 			if err != nil {
-				_ = SetOffline(ip)
+				_ = SetOffline(hostname)
 				break
 			}
 			stats := UsageStats{}
@@ -57,6 +54,7 @@ func Handler() common.Handler {
 			if err != nil {
 				break
 			}
+			hostname = stats.Hostname
 			secretKey, err := ioutil.ReadFile(".secret")
 			key := string(secretKey)
 			if stats.Secret != key {
@@ -65,7 +63,7 @@ func Handler() common.Handler {
 			}
 			// Blank out secret key after comparing.
 			stats.Secret = ""
-			err = WriteStats(ip, stats)
+			err = WriteStats(hostname, stats)
 			if err != nil {
 				break
 			}
@@ -79,11 +77,11 @@ func Handler() common.Handler {
 	}
 }
 
-func SetOffline(ip string) error {
-	server, ok := Servers[ip]
+func SetOffline(hostname string) error {
+	server, ok := Servers[hostname]
 	if ok {
 		server.Online = false
-		Servers[ip] = server
+		Servers[hostname] = server
 	}
 
 	jsonServers, err := json.MarshalIndent(Servers, "", "  ")
@@ -98,8 +96,8 @@ func SetOffline(ip string) error {
 	return nil
 }
 
-func WriteStats(ip string, stats UsageStats) error {
-	server, ok := Servers[ip]
+func WriteStats(hostname string, stats UsageStats) error {
+	server, ok := Servers[hostname]
 	if ok {
 		server.Stats = stats
 		server.Online = true
@@ -110,13 +108,14 @@ func WriteStats(ip string, stats UsageStats) error {
 			Online: true,
 		}
 	}
-	Servers[ip] = server
+	Servers[hostname] = server
 
 	return nil
 }
 
 // Close handler, begin chain of escalation.
 func CloseHandler(code int, text string) error {
+	fmt.Println("ws closed")
 	if code != 1000 {
 		return errors.New("websocket closed badly")
 	}

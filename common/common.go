@@ -10,7 +10,7 @@ import (
 )
 
 // RouterContext contains any information to be shared with middlewares.
-type RouterContext struct {}
+type RouterContext struct{}
 
 // Handler is the signature of HTTP Handler that is passed to Handle function
 type Handler func(rc *RouterContext, w http.ResponseWriter, r *http.Request) *HTTPError
@@ -21,6 +21,13 @@ type HTTPError struct {
 	// Status code that'll be sent in response
 	StatusCode int
 }
+
+type Configuration struct {
+	Port     int `yaml:"port"`
+	Interval int `yaml:"interval"`
+}
+
+var Config Configuration
 
 // ReadAndServeFile reads the file from specified location and sends it in response
 func ReadAndServeFile(name string, w http.ResponseWriter) *HTTPError {
