@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/go-yaml/yaml"
 	"github.com/gorilla/websocket"
 	"github.com/shirou/gopsutil/cpu"
@@ -44,6 +45,14 @@ func main() {
 	}
 
 	addr := conf.Master
+	if addr == "" {
+		fmt.Println("Missing master server URL, please edit your config.yml")
+		os.Exit(1)
+	}
+	if conf.Secret == "" {
+		fmt.Println("Missing master server secret key, please edit your config.yml")
+		os.Exit(1)
+	}
 	u := url.URL{Scheme: "ws", Host: addr, Path: "/stats"}
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
@@ -61,11 +70,10 @@ func main() {
 	go func() {
 		defer close(done)
 		for {
-			_, message, err := c.ReadMessage()
+			_, _, err := c.ReadMessage()
 			if err != nil {
 				break
 			}
-			log.Printf("recv: %v", message)
 		}
 	}()
 
