@@ -1,6 +1,7 @@
 # Platypus
 ## Simple realtime server monitoring
 
+[![CircleCI](https://circleci.com/gh/gmemstr/Platypus.svg?style=svg)](https://circleci.com/gh/gmemstr/Platypus)
 [![https://img.shields.io/badge/demo-status.gmem.ca-black.svg](https://img.shields.io/badge/demo-status.gmem.ca-black.svg?style=for-the-badge)](https://status.gmem.ca) 
 [![https://img.shields.io/badge/frontend-gmemstr%2Fplatypus--react-blue.svg](https://img.shields.io/badge/frontend-gmemstr%2Fplatypus--react-blue.svg?style=for-the-badge)](https://github.com/gmemstr/platypus-react)
 
