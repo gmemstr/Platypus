@@ -49,3 +49,5 @@ when it comes to what kind of information you want to monitor and how.
 ### Polling
 
 There is an optional route that works well with plugins - the `/poll` endpoint.
+
+Requires a few headers
