@@ -55,6 +55,7 @@ jobs:
       - attach_workspace:
           at: .
       - run: pwd && ls -alh
+      - run: cd src/github.com/gmemstr/platypus
       - run:
           name: Stop Platypus Service
           command: |
