@@ -38,13 +38,9 @@ jobs:
           command: |
             ssh gsimmer@chicago.gmem.ca -p 66 "sudo systemctl stop platypus; sudo systemctl status platypus || true"
       - run:
-          name: Deploy Binary
+          name: Deploy built files
           command: |
-            sftp -P 66 gsimmer@chicago.gmem.ca <<< $'put src/github.com/gmemstr/platypus/platypus /home/gsimmer/platypus/platypus'
-      - run:
-          name: Deploy Web Files
-          command: |
-            sftp -P 66 gsimmer@chicago.gmem.ca <<< $'put -r src/github.com/gmemstr/platypus/web /home/gsimmer/platypus'
+            rsync -aR web/ platypus gsimmer@chicago.gmem.ca:66/home/gsimmer/platypus
       - run:
           name: Restart Platypus services
           command: |
