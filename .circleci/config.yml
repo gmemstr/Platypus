@@ -1,10 +1,15 @@
 version: 2
+orbs:
+  platypus-status: gmem/platypus-status@0.0.1
 jobs:
   build:
     working_directory: /go/src/github.com/gmemstr/platypus
     docker:
       - image: circleci/golang:1.9
     steps:
+      - platypus-status/started:
+          instance: status.gmem.ca
+          job-name: "Platypus Build"
       - checkout
       - run: echo "hello world"
       - run: go get github.com/gorilla/mux
