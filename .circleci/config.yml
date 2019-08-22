@@ -54,6 +54,7 @@ jobs:
             - "51:df:67:8b:a9:71:ad:b4:f6:49:96:e6:67:7b:98:cc"
       - attach_workspace:
           at: .
+      - run: pwd && ls -alh
       - run:
           name: Stop Platypus Service
           command: |
