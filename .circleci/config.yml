@@ -8,7 +8,6 @@ jobs:
       - image: circleci/golang:1.9
     steps:
       - platypus-status/started:
-          instance: status.gmem.ca
           job-name: "Platypus Build"
       - checkout
       - run: echo "hello world"
