@@ -10,11 +10,11 @@ jobs:
       - platypus-status/started:
           job-name: "Platypus Build"
       - checkout
-      - run: echo "hello world"
       - run: go get github.com/gorilla/mux
       - run: go get github.com/gorilla/websocket
       - run: go get github.com/shirou/gopsutil
       - run: go get github.com/go-yaml/yaml
+      - run: go get github.com/containous/yaegi
       - run: go build
       - store_artifacts:
           path: /go/src/github.com/gmemstr/platypus/platypus
@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Deploy built files
           command: |
-            rsync -aR web/ platypus gsimmer@chicago.gmem.ca:66/home/gsimmer/platypus
+            rsync -e "ssh -p 66" -aR web/ platypus gsimmer@chicago.gmem.ca/home/gsimmer/platypus
       - run:
           name: Restart Platypus services
           command: |
