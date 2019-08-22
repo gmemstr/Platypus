@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 orbs:
   platypus-status: gmem/platypus-status@0.0.1
 jobs:
