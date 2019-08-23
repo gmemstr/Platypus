@@ -1,16 +1,20 @@
-version: 2
+version: 2.1
+orbs:
+  platypus-status: gmem/platypus-status@0.0.3
 jobs:
   build:
     working_directory: /go/src/github.com/gmemstr/platypus
     docker:
       - image: circleci/golang:1.9
     steps:
+      - platypus-status/started:
+          job-name: "Platypus Build"
       - checkout
-      - run: echo "hello world"
       - run: go get github.com/gorilla/mux
       - run: go get github.com/gorilla/websocket
       - run: go get github.com/shirou/gopsutil
       - run: go get github.com/go-yaml/yaml
+      - run: go get github.com/containous/yaegi
       - run: go build
       - store_artifacts:
           path: /go/src/github.com/gmemstr/platypus/platypus
@@ -33,13 +37,9 @@ jobs:
           command: |
             ssh gsimmer@chicago.gmem.ca -p 66 "sudo systemctl stop platypus; sudo systemctl status platypus || true"
       - run:
-          name: Deploy Binary
+          name: Deploy built files
           command: |
-            sftp -P 66 gsimmer@chicago.gmem.ca <<< $'put src/github.com/gmemstr/platypus/platypus /home/gsimmer/platypus/platypus'
-      - run:
-          name: Deploy Web Files
-          command: |
-            sftp -P 66 gsimmer@chicago.gmem.ca <<< $'put -r src/github.com/gmemstr/platypus/web /home/gsimmer/platypus'
+            rsync -e "ssh -p 66" -aR web/ platypus gsimmer@chicago.gmem.ca:/home/gsimmer/platypus
       - run:
           name: Restart Platypus services
           command: |
@@ -55,7 +55,6 @@ jobs:
       - attach_workspace:
           at: .
       - run: pwd && ls -alh
-      - run: cd src/github.com/gmemstr/platypus
       - run:
           name: Stop Platypus Service
           command: |
@@ -63,7 +62,7 @@ jobs:
       - run:
           name: Deploy built files
           command: |
-            rsync -aR web/ platypus platypus@platypus.gmem.dev/home/platypus/platypus
+            rsync -aR web/ platypus platypus@platypus.gmem.dev:/home/platypus/platypus
       - run:
           name: Restart Platypus services
           command: |
