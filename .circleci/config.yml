@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Deploy built files
           command: |
-            rsync -e "ssh -p 66" -aR web/ platypus gsimmer@chicago.gmem.ca:/home/gsimmer/platypus
+            rsync -e "ssh -p 66" -aR  src/github.com/gmemstr/platypus/web/ src/github.com/gmemstr/platypus/platypus gsimmer@chicago.gmem.ca:/home/gsimmer/platypus
       - run:
           name: Restart Platypus services
           command: |
@@ -54,6 +54,7 @@ jobs:
             - "51:df:67:8b:a9:71:ad:b4:f6:49:96:e6:67:7b:98:cc"
       - attach_workspace:
           at: .
+      - run: cd src/github.com/gmemstr/platypus
       - run: pwd && ls -alh
       - run:
           name: Stop Platypus Service
@@ -62,7 +63,7 @@ jobs:
       - run:
           name: Deploy built files
           command: |
-            rsync -aR web/ platypus platypus@platypus.gmem.dev:/home/platypus/platypus
+            rsync -aR  src/github.com/gmemstr/platypus/web/ src/github.com/gmemstr/platypus/platypus platypus@platypus.gmem.dev:/home/platypus/platypus
       - run:
           name: Restart Platypus services
           command: |
