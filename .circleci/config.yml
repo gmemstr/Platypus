@@ -99,4 +99,7 @@ workflows:
           filters:
             branches:
               only: master
-      - finished
+      - finished:
+          requires:
+            - deploy-staging
+            - deploy
