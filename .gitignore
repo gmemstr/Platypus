@@ -2,5 +2,4 @@
 .secret
 stats.json
 client/config.yml
-plugins/*
 config.yml

@@ -1,9 +1,9 @@
 package pluginhandler
 
 import (
-	"errors"
 	"fmt"
 	"github.com/containous/yaegi/interp"
+	"github.com/containous/yaegi/stdlib"
 	"github.com/go-yaml/yaml"
 	"io/ioutil"
 	"regexp"
@@ -22,9 +22,10 @@ type Plugin struct {
 }
 
 type HookFunc struct {
-	Type string
-	Name string
-	Func string
+	Type     string
+	Name     string
+	Func     string
+	Contents string
 }
 
 // Searches through plugins directory and registers plugins with a valid
@@ -64,35 +65,46 @@ func RegisterPlugins() {
 		hookRe := regexp.MustCompile(`((func)\s\w+\(.*\)(\s|.)*{(\s|.)*})`)
 		funcs := hookRe.FindStringSubmatch(pluginContent)
 
-		for _, funcContent := range funcs {
+		for range funcs {
 			re := regexp.MustCompile(`((func)\s\w+)`)
 			foundFuncName := re.FindStringSubmatch(pluginContent)
 			realFuncName := strings.TrimLeft(foundFuncName[1], "func ")
 
 			hookFunc := HookFunc{
-				Type: "something",
-				Name: realFuncName,
-				Func: funcContent,
+				Type: realFuncName,
+				Func: pluginName + "." + realFuncName,
+				Contents: pluginContent,
 			}
 
 			registeredPlugin.ImplementsHooks = append(registeredPlugin.ImplementsHooks, hookFunc)
 		}
 		Plugins[pluginName] = registeredPlugin
+		fmt.Println("Registered plugin " + pluginName)
 	}
 
 }
 
 // Loop through registered plugins and execute any that match the hook.
-func ExecuteHook(data string, hook string) string {
+func ExecuteHook(original string, hook string) string {
+	data := original
 	for _, plugin := range Plugins {
 		for _, hookImplementor := range plugin.ImplementsHooks {
 			if hookImplementor.Type == hook {
 				// @TODO: Handle errors :(
-				data, _ = executePlugin(data, hookImplementor)
+				data, err := executePlugin(original, hookImplementor)
+				if err != nil {
+					fmt.Println(err.Error())
+				}
+				if data == "" {
+					continue
+				}
 			}
 		}
 	}
-
+	// If the plugins returned us nothing, return our original data.
+	if data == "" {
+		return original
+	}
 	return data
 }
 
@@ -100,22 +112,21 @@ func ExecuteHook(data string, hook string) string {
 func executePlugin(data string, hook HookFunc) (string, error) {
 	result := data
 	interpreter := interp.New(interp.Options{})
-	_, err := interpreter.Eval(hook.Func)
+	interpreter.Use(stdlib.Symbols)
+	_, err := interpreter.Eval(hook.Contents)
 	if err != nil {
 		return result, err
 	}
-	function, err := interpreter.Eval(hook.Name)
+	function, err := interpreter.Eval(hook.Func)
 	if err != nil {
 		return "", err
 	}
 
-	callable, ok := function.Interface().(func(string) string)
-	if !ok {
-		return "", errors.New("type does not match")
+	callable := function.Interface().(func(string) (string, error))
+	result, err = callable(data)
+	if err != nil {
+		return "", err
 	}
-
-	result = callable(data)
 
 	return result, nil
 }
-

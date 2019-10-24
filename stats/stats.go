@@ -104,6 +104,7 @@ func SetOffline(hostname string) error {
 	if err != nil {
 		return err
 	}
+	_ = pluginhandler.ExecuteHook(hostname, "Offline")
 
 	return nil
 }
