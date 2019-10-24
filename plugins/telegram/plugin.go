@@ -16,7 +16,7 @@ type TelegramConfiguration struct {
 func Offline(data string) (string, error) {
 	file, err := os.Open("plugins/telegram/config.yml")
 	if err != nil {
-		return ""
+		return "", err
 	}
 
 	var configStrings []string
@@ -35,7 +35,7 @@ func Offline(data string) (string, error) {
 
 	request, err := http.NewRequest("GET", requestUrl + "/sendMessage" + requestData, nil)
 	if err != nil {
-		return ""
+		return "", err
 	}
 	request.Header.Set("Content-Type", "application/json")
 
@@ -43,5 +43,5 @@ func Offline(data string) (string, error) {
 	resp, err := client.Do(request)
 	defer resp.Body.Close()
 
-	return ""
+	return "", nil
 }
