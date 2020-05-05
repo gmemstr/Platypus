@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  platypus-status: gmem/platypus-status@0.0.5
+  platypus-status: gmem/platypus-status@0.0.7
 jobs:
   build:
     working_directory: /go/src/github.com/gmemstr/platypus
