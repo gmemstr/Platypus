@@ -1,23 +1,13 @@
 version: 2.1
 jobs:
   build:
-    working_directory: /go/src/github.com/gmemstr/platypus
     docker:
-      - image: circleci/golang:1.9
+      - image: cimg/golang:1.14
     steps:
       - checkout
-      - run: go get github.com/gorilla/mux
-      - run: go get github.com/gorilla/websocket
-      - run: go get github.com/shirou/gopsutil
-      - run: go get github.com/go-yaml/yaml
-      - run: go get github.com/containous/yaegi
       - run: go build
       - store_artifacts:
-          path: /go/src/github.com/gmemstr/platypus/platypus
-      - persist_to_workspace:
-          root: /go
-          paths:
-            - .
+          path: platypus
 
   # deploy:
   #   machine:
