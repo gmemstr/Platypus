@@ -30,8 +30,8 @@ type HookFunc struct {
 	Contents string
 }
 
-// Searches through plugins directory and registers plugins with a valid
-// plugin.yml file. Should only be run at startup.
+// RegisterPlugins searches through plugins directory and registers plugins 
+// with a valid plugin.yml file. Should only be run at startup.
 // @TODO: Investigate reloading?
 func RegisterPlugins() {
 	Plugins = make(map[string]Plugin)
@@ -64,7 +64,7 @@ func RegisterPlugins() {
 		}
 		pluginContent := string(pluginContents)
 
-		hookRe := regexp.MustCompile(`(func )[A-Z][a-z]+\(.+[^)]\)\s?{(.|\n)*?\n}`)
+		hookRe := regexp.MustCompile(`(func )[A-Z][a-z]+\(.+\)\s?{(.|\n)*?\n}`)
 		funcs := hookRe.FindAllStringSubmatch(pluginContent, -1)
 
 		for range funcs {
